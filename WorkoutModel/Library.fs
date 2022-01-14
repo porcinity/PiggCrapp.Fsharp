@@ -60,6 +60,12 @@ type RegularSet =
         Reps : Reps
     }
     
+module RegularSet =
+    let create =
+        fun weight reps ->
+            { Weight = weight
+              Reps = reps }
+    
 type RestPauseSet =
     {
         Weight : Weight
