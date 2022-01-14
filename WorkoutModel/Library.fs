@@ -14,15 +14,15 @@ type SplitVariation =
 type WorkoutVariation = WorkoutVariation of string
 
 module WorkoutVariation =
-    let create =
-        fun split variation ->
-            match split, variation with
-            | Upper, A -> WorkoutVariation "Upper A"
-            | Upper, B -> WorkoutVariation "Upper B"
-            | Upper, C -> WorkoutVariation "Upper C"
-            | Lower, A -> WorkoutVariation "Lower A"
-            | Lower, B -> WorkoutVariation "Lower B"
-            | Lower, C -> WorkoutVariation "Lower C"
+    let toString =
+        fun variation ->
+            match variation with
+            | UpperA -> "Upper A"
+            | UpperB -> "Upper B"
+            | UpperC -> "Upper C"
+            | LowerA -> "Lower A"
+            | LowerB -> "Lower B"
+            | LowerC -> "Lower C"
     
 type Weight = Weight of int
 
