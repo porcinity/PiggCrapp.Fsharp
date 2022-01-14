@@ -26,6 +26,19 @@ module WorkoutVariation =
     
 type Weight = Weight of int
 
+module Weight =
+    let (|TooHeavy|TooLight|GoodWeight|) n =
+        match n with
+        | x when x > 1000 -> TooHeavy
+        | x when x < 1 -> TooLight
+        | _ -> GoodWeight
+    
+    let fromInt n =
+        match n with
+        | TooHeavy -> Error [ "Too heavy." ]
+        | TooLight -> Error [ "Too light." ]
+        | GoodWeight -> Weight n |> Ok
+
 type Reps = Reps of int
     
 type RegularSet =
