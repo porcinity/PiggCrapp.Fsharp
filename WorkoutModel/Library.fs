@@ -40,6 +40,19 @@ module Weight =
         | GoodWeight -> Weight n |> Ok
 
 type Reps = Reps of int
+
+module Reps =
+    let (|TooMany|TooFew|GoodReps|) n =
+        match n with
+        | x when x > 100 -> TooMany
+        | x when x < 0 -> TooFew
+        | _ -> GoodReps
+        
+    let fromInt n =
+        match n with
+        | TooMany -> Error [ "Too many reps." ]
+        | TooFew -> Error [ "Too few reps." ]
+        | GoodReps -> Reps n |> Ok
     
 type RegularSet =
     {
