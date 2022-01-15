@@ -6,12 +6,13 @@ type Split =
     | Upper
     | Lower
     
-type SplitVariation =
-    | A
-    | B
-    | C
-    
-type WorkoutVariation = WorkoutVariation of string
+type WorkoutVariation =
+    | UpperA
+    | UpperB
+    | UpperC
+    | LowerA
+    | LowerB
+    | LowerC
 
 module WorkoutVariation =
     let toString =
