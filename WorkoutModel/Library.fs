@@ -24,8 +24,11 @@ module WorkoutVariation =
             | LowerA -> "Lower A"
             | LowerB -> "Lower B"
             | LowerC -> "Lower C"
-    
-type Weight = Weight of int
+
+[<Measure>]
+type lbs
+
+type Weight = Weight of int<lbs>
 
 module Weight =
     let (|TooHeavy|TooLight|GoodWeight|) n =
