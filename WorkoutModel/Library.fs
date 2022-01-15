@@ -31,10 +31,10 @@ type lbs
 type Weight = Weight of int<lbs>
 
 module Weight =
-    let (|TooHeavy|TooLight|GoodWeight|) n =
+    let (|TooHeavy|TooLight|GoodWeight|) (n: int<lbs>) =
         match n with
-        | x when x > 1000 -> TooHeavy
-        | x when x < 1 -> TooLight
+        | x when x > 1000<lbs> -> TooHeavy
+        | x when x < 1<lbs> -> TooLight
         | _ -> GoodWeight
     
     let fromInt n =
