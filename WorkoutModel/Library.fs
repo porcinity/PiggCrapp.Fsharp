@@ -1,10 +1,6 @@
 ﻿namespace WorkoutModel
 
 open System
-
-type Split =
-    | Upper
-    | Lower
     
 type WorkoutVariation =
     | UpperA
