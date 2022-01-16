@@ -1,6 +1,7 @@
 ﻿namespace WorkoutModel
 
 open System
+open System.Text.RegularExpressions
     
 type WorkoutVariation =
     | UpperA
