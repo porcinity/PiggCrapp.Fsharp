@@ -56,10 +56,8 @@ module Reps =
         | GoodReps -> Reps n |> Ok
     
 type RegularSet =
-    {
-        Weight : Weight
-        Reps : Reps
-    }
+    { Weight : Weight
+      Reps : Reps }
     
 module RegularSet =
     let create =
