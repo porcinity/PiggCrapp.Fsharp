@@ -108,6 +108,12 @@ type Exercise =
     { ExerciseId : ExerciseId
       Name : ExerciseName
       Sets : Set list }
+    
+module Exercise =
+    let create exerciseName =
+        { ExerciseId = ExerciseId <| Guid.NewGuid()
+          Name = exerciseName
+          Sets = [] }
 
 type WorkoutId = WorkoutId of Guid
 
