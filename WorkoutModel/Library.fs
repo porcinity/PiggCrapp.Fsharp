@@ -114,6 +114,9 @@ module Exercise =
         { ExerciseId = ExerciseId <| Guid.NewGuid()
           Name = exerciseName
           Sets = [] }
+    
+    let addSet exercise set =
+        { exercise with Sets = exercise.Sets @ set }
 
 type WorkoutId = WorkoutId of Guid
 
