@@ -67,12 +67,16 @@ module RegularSet =
               Reps = reps }
     
 type RestPauseSet =
-    {
-        Weight : Weight
-        FirstSet : Reps
-        SecondSet : Reps
-        ThirdSet : Reps
+    { Weight : Weight
+      RestPauseSets : Reps list
     }
+    
+module RestPauseSet =
+    
+    let create =
+        fun weight repsList ->
+            { Weight = weight
+              RestPauseSets = repsList }
     
 type DropSet =
     {
