@@ -88,20 +88,21 @@ type ExerciseId = ExerciseId of Guid
 
 type ExerciseName = ExerciseName of string
 
-module ExerciseName =
-    let (|Empty|TooLong|BeginWithWhitespace|ValidExerciseName|) string =
-        match string with
+module ExerciseName =    
+    let (|Empty|TooLong|SpecialChars|ValidExerciseName|) (str: string) =
+        match str with
         | "" -> Empty
         | x when String.length(x) > 50 -> TooLong
-        | x when String.IsNullOrWhiteSpace(x) -> BeginWithWhitespace
+        | x when Regex.IsMatch(x, "^[a-zA-Z][a-zA-Z\s]*$") = false -> SpecialChars
         | _ -> ValidExerciseName
 
-    let create name =
-        match name with
+    let create (name: string) =
+        let trim = name.TrimStart(' ').TrimEnd(' ')
+        match trim with
         | Empty -> Error [ "Exercise name can't be blank." ]
         | TooLong -> Error [ "Exercise name can't be more than 50 characters." ]
-        | BeginWithWhitespace -> Error [ "Exercise name can't begin with white space." ]
-        | ValidExerciseName -> ExerciseName name |> Ok
+        | SpecialChars -> Error [ "Exercise name can't contain numbers or special chars." ]
+        | ValidExerciseName -> trim |> Ok
 
 type Exercise =
     { ExerciseId : ExerciseId
