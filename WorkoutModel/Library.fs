@@ -80,7 +80,7 @@ module RestPauseSet =
     
 type DropSet =
     {
-        Drops : RegularSet list
+        DropSets : RegularSet list
     }
     
 type Set =
