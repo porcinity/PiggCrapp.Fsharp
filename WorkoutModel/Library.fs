@@ -117,6 +117,12 @@ module Exercise =
     
     let addSet exercise set =
         { exercise with Sets = exercise.Sets @ set }
+        
+    let removeSet exercise set =
+        let setsWithout =
+            exercise.Sets
+            |> List.filter (fun x -> x <> set)
+        { exercise with Sets = setsWithout }
 
 type WorkoutId = WorkoutId of Guid
 
