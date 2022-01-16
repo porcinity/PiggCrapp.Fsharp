@@ -77,10 +77,7 @@ module RestPauseSet =
             { Weight = weight
               RestPauseSets = repsList }
     
-type DropSet =
-    {
-        DropSets : RegularSet list
-    }
+type DropSet = { DropSets : RegularSet list }
     
 type Set =
     | Regular of RegularSet
