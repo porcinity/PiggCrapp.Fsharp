@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "WorkoutModel", "WorkoutModel\WorkoutModel.fsproj", "{1BDBD853-4CF8-480F-B709-28C318E0AF01}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PiggCrapp", "PiggCrapp\PiggCrapp.fsproj", "{1BDBD853-4CF8-480F-B709-28C318E0AF01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
