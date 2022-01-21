@@ -211,12 +211,13 @@ type Workout =
       Exercises : Exercise list }
     
 module Workout =
-    let create variation =
-        let today = DateOnly.FromDateTime(DateTime.Now)
+    let create variation owner =
+        let today = DateTime.Now
         { WorkoutId = WorkoutId <| Guid.NewGuid()
           Date = today
           Variation = variation
-          Exercises = [] }
+          Exercises = []
+          Owner = owner.UserId }
     
     let changeVariation workout variation =
         { workout with Variation = variation }
