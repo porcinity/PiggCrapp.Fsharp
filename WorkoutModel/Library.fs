@@ -75,13 +75,26 @@ type RestPauseSet =
       RestPauseSets : Reps list }
     
 module RestPauseSet =
-    
     let create =
-        fun weight repsList ->
-            { Weight = weight
-              RestPauseSets = repsList }
+        fun weight ->
+            { RpSetId = RpSetId <| Guid.NewGuid() 
+              Weight = weight
+              RestPauseSets = [] }
     
-type DropSet = { DropSets : RegularSet list }
+    let addReps rpSet reps =
+        { rpSet with RestPauseSets = rpSet.RestPauseSets @ [reps] }
+    
+    let removeReps rpSet reps =
+        let setMinus =
+            rpSet.RestPauseSets
+            |> List.filter (fun r -> r <> reps)
+        { rpSet with RestPauseSets = setMinus }
+    
+type DropSetId = DropSetId of Guid
+    
+type DropSet =
+    { DropSetId : DropSetId
+      DropSets : RegularSet list }
     
 type Set =
     | Regular of RegularSet
