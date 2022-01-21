@@ -167,14 +167,16 @@ type Exercise =
     { ExerciseId : ExerciseId
       Name : ExerciseName
       Notes : ExerciseNotes
-      Sets : Set list }
+      Sets : Set list
+      WorkoutId : WorkoutId }
     
 module Exercise =
-    let create exerciseName exerciseNotes =
+    let create exerciseName exerciseNotes workoutId =
         { ExerciseId = ExerciseId <| Guid.NewGuid()
           Name = exerciseName
           Notes = exerciseNotes
-          Sets = [] }
+          Sets = []
+          WorkoutId = workoutId }
         
     let changeName exercise name =
         { exercise with Name = name }
