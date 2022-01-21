@@ -206,9 +206,10 @@ type User =
 
 type Workout =
     { WorkoutId : WorkoutId
-      Date : DateOnly
+      Date : DateTime
       Variation : WorkoutVariation
-      Exercises : Exercise list }
+      Exercises : Exercise list
+      Owner : UserId }
     
 module Workout =
     let create variation owner =
