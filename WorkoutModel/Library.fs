@@ -22,16 +22,15 @@ module WorkoutVariation =
             | LowerB -> "Lower B"
             | LowerC -> "Lower C"
 
-[<Measure>]
-type lbs
+[<Measure>] type lbs
 
-type Weight = Weight of int<lbs>
+type Weight = Weight of double<lbs>
 
 module Weight =
-    let (|TooHeavy|TooLight|GoodWeight|) (n: int<lbs>) =
+    let (|TooHeavy|TooLight|GoodWeight|) (n: double<lbs>) =
         match n with
-        | x when x > 1000<lbs> -> TooHeavy
-        | x when x < 1<lbs> -> TooLight
+        | x when x > 1000.00<lbs> -> TooHeavy
+        | x when x < 1.00<lbs> -> TooLight
         | _ -> GoodWeight
     
     let fromInt n =
