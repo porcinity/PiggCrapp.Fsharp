@@ -234,18 +234,3 @@ module Workout =
             workout.Exercises
             |> List.filter (fun e -> e <> exercise)
         { workout with Exercises = newList }
-        
-type UserId = UserId of Guid
-
-type UserName = UserName of string
-
-type User =
-    { UserId : UserId
-      Name : UserName }
-
-type LogId = LogId of Guid
-
-type WorkoutLog =
-    { LogId : LogId
-      Owner : User
-      Workouts : Workout list }
