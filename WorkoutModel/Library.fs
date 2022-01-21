@@ -160,9 +160,12 @@ module Exercise =
           Name = exerciseName
           Notes = exerciseNotes
           Sets = [] }
+        
+    let changeName exercise name =
+        { exercise with Name = name }
     
     let addSet exercise set =
-        { exercise with Sets = exercise.Sets @ set }
+        { exercise with Sets = exercise.Sets @ [set] }
         
     let removeSet exercise set =
         let setsWithout =
