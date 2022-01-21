@@ -67,10 +67,12 @@ module RegularSet =
             { Weight = weight
               Reps = reps }
     
+type RpSetId = RpSetId of Guid
+    
 type RestPauseSet =
-    { Weight : Weight
-      RestPauseSets : Reps list
-    }
+    { RpSetId : RpSetId
+      Weight : Weight
+      RestPauseSets : Reps list }
     
 module RestPauseSet =
     
