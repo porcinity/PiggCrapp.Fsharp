@@ -173,7 +173,19 @@ module Exercise =
             |> List.filter (fun x -> x <> set)
         { exercise with Sets = setsWithout }
 
-type WorkoutId = WorkoutId of Guid
+type UserId = UserId of Guid
+
+module UserId =
+    let toGuid (UserId id) = id
+
+type UserName = UserName of string
+
+module UserName =
+    let toString (UserName name) = name
+
+type User =
+    { UserId : UserId
+      Name : UserName }
 
 type Workout =
     { WorkoutId : WorkoutId
