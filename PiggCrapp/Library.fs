@@ -21,6 +21,16 @@ module WorkoutVariation =
             | LowerA -> "Lower A"
             | LowerB -> "Lower B"
             | LowerC -> "Lower C"
+            
+    let fromString =
+        fun str ->
+            match str with
+            | "Upper A" -> UpperA
+            | "Upper B" -> UpperB
+            | "Upper C" -> UpperC
+            | "Lower A" -> LowerA
+            | "Lower B" -> LowerB
+            | "Lower C" -> LowerC
 
 [<Measure>] type lbs
 
