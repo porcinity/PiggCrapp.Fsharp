@@ -7,7 +7,13 @@
 
     <ItemGroup>
         <Compile Include="Library.fs" />
+        <Compile Include="WorkoutStorage.fs" />
+        <Compile Include="UserStorage.fs" />
         <None Include="Validation.fsx" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Npgsql.FSharp" Version="4.1.0" />
     </ItemGroup>
 
 </Project>
