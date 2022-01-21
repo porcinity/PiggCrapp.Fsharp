@@ -158,6 +158,11 @@ module ExerciseName =
         | SpecialChars -> Error [ "Exercise name can't contain numbers or special chars." ]
         | ValidExerciseName -> trim |> Ok
 
+type WorkoutId = WorkoutId of Guid
+
+module WorkoutId =
+    let toGuid (WorkoutId id) = id
+
 type Exercise =
     { ExerciseId : ExerciseId
       Name : ExerciseName
