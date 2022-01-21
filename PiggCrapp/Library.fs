@@ -33,7 +33,7 @@ module Weight =
         | x when x < 1.00<lbs> -> TooLight
         | _ -> GoodWeight
     
-    let fromInt n =
+    let fromDbl n =
         match n with
         | TooHeavy -> Error [ "Too heavy." ]
         | TooLight -> Error [ "Too light." ]
