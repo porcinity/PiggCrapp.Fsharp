@@ -53,9 +53,12 @@ module Reps =
         | TooMany -> Error [ "Too many reps." ]
         | TooFew -> Error [ "Too few reps." ]
         | GoodReps -> Reps n |> Ok
+
+type RegularSetId = RegularSetId of Guid
     
 type RegularSet =
-    { Weight : Weight
+    { RegularSetId : RegularSetId 
+      Weight : Weight
       Reps : Reps }
     
 module RegularSet =
