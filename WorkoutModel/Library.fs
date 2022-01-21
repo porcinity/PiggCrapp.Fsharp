@@ -64,7 +64,8 @@ type RegularSet =
 module RegularSet =
     let create =
         fun weight reps ->
-            { Weight = weight
+            { RegularSetId = RegularSetId <| Guid.NewGuid()
+              Weight = weight
               Reps = reps }
     
 type RpSetId = RpSetId of Guid
