@@ -180,7 +180,30 @@ type Workout =
       Date : DateOnly
       Variation : WorkoutVariation
       Exercises : Exercise list }
+    
+module Workout =
+    let create variation =
+        let today = DateOnly.FromDateTime(DateTime.Now)
+        { WorkoutId = WorkoutId <| Guid.NewGuid()
+          Date = today
+          Variation = variation
+          Exercises = [] }
+    
+    let changeVariation workout variation =
+        { workout with Variation = variation }
+        
+    let changeDate workout date =
+        { workout with Date = date }
 
+    let addExercise workout exercise =
+        { workout with Exercises = workout.Exercises @ [exercise] }
+    
+    let removeExercise workout exercise =
+        let newList =
+            workout.Exercises
+            |> List.filter (fun e -> e <> exercise)
+        { workout with Exercises = newList }
+        
 type UserId = UserId of Guid
 
 type UserName = UserName of string
