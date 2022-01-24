@@ -65,32 +65,37 @@ module Reps =
         | GoodReps -> Reps n |> Ok
 
 type RegularSetId = RegularSetId of Guid
+type ExerciseId = ExerciseId of Guid
     
 type RegularSet =
     { RegularSetId : RegularSetId 
       Weight : Weight
-      Reps : Reps }
+      Reps : Reps
+      Exercise : ExerciseId }
     
 module RegularSet =
     let create =
-        fun weight reps ->
+        fun exerciseId weight reps ->
             { RegularSetId = RegularSetId <| Guid.NewGuid()
               Weight = weight
-              Reps = reps }
+              Reps = reps
+              Exercise = exerciseId }
     
 type RpSetId = RpSetId of Guid
     
 type RestPauseSet =
     { RpSetId : RpSetId
       Weight : Weight
-      RestPauseSets : Reps list }
+      RestPauseSets : Reps list
+      Exercise : ExerciseId }
     
 module RestPauseSet =
     let create =
-        fun weight ->
+        fun weight exerciseId ->
             { RpSetId = RpSetId <| Guid.NewGuid() 
               Weight = weight
-              RestPauseSets = [] }
+              RestPauseSets = []
+              Exercise = exerciseId }
     
     let addReps rpSet reps =
         { rpSet with RestPauseSets = rpSet.RestPauseSets @ [reps] }
@@ -105,7 +110,8 @@ type DropSetId = DropSetId of Guid
     
 type DropSet =
     { DropSetId : DropSetId
-      DropSets : RegularSet list }
+      DropSets : RegularSet list
+      Exercise : ExerciseId }
     
 type Set =
     | Regular of RegularSet
@@ -137,8 +143,6 @@ type MachineType =
 type ExerciseNotes =
     { SeatSetting : SeatSetting
       MachineType : MachineType }
-
-type ExerciseId = ExerciseId of Guid
 
 type ExerciseName = ExerciseName of string
 
