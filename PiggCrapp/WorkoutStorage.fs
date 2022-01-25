@@ -45,3 +45,10 @@ let insertWorkoutAsync workout =
         "@date", Sql.timestamp workout.Date
         "@variation", Sql.text <| WorkoutVariation.toString workout.Variation
     ]
+    
+let deleteWorkoutAsync workout =
+    connStr
+    |> Sql.connect
+    |> Sql.query "delete from workouts where workout_id = @id"
+    |> Sql.parameters [ "@id", Sql.uuid <| WorkoutId.toGuid workout.WorkoutId ]
+    |> Sql.executeNonQueryAsync
