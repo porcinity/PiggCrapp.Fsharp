@@ -191,7 +191,7 @@ module Exercise =
     let create exerciseName exerciseNotes workoutId =
         { ExerciseId = ExerciseId <| Guid.NewGuid()
           Name = exerciseName
-          Notes = exerciseNotes
+          Notes = None
           Sets = []
           WorkoutId = workoutId }
         
