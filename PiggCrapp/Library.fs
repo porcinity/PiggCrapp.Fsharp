@@ -69,6 +69,10 @@ module Reps =
     let toInt (Reps n) = n
 
 type RegularSetId = RegularSetId of Guid
+
+module RegularSetId =
+    let toGuid (RegularSetId id) = id
+    
 type ExerciseId = ExerciseId of Guid
     
 type RegularSet =
