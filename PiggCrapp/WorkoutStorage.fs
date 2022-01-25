@@ -5,10 +5,11 @@ open WorkoutModel
 
 let connStr = "Host=localhost;Database=PiggCrapp;Username=test;Password=test"
     
-let findWorkoutsAsync =
+let findWorkoutsAsync userId =
     connStr
     |> Sql.connect
-    |> Sql.query "select * from workouts"
+    |> Sql.query "select * from workouts where workout_owner = @id"
+    |> Sql.parameters [ "@id", Sql.uuid <| UserId.toGuid userId]
     |> Sql.execute (fun read ->
         {
            WorkoutId = read.uuid "workout_id" |> WorkoutId
