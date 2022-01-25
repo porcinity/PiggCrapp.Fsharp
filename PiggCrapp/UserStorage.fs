@@ -36,3 +36,10 @@ let insertUserAsync user =
         "@name", Sql.text <| UserName.toString user.Name
     ]
     |> Sql.executeNonQueryAsync
+    
+let deleteUserAsync user =
+    connStr
+    |> Sql.connect
+    |> Sql.query "delete from users where user_id = @id"
+    |> Sql.parameters [ "@id", Sql.uuid <| UserId.toGuid user.UserId ]
+    |> Sql.executeNonQueryAsync
