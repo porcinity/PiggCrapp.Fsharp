@@ -183,7 +183,7 @@ module ExerciseId =
 type Exercise =
     { ExerciseId : ExerciseId
       Name : ExerciseName
-      Notes : ExerciseNotes
+      Notes : ExerciseNotes option
       Sets : Set list
       WorkoutId : WorkoutId }
     
