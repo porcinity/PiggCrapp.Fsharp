@@ -65,6 +65,8 @@ module Reps =
         | TooMany -> Error [ "Too many reps." ]
         | TooFew -> Error [ "Too few reps." ]
         | GoodReps -> Reps n |> Ok
+        
+    let toInt (Reps n) = n
 
 type RegularSetId = RegularSetId of Guid
 type ExerciseId = ExerciseId of Guid
