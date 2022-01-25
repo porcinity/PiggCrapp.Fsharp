@@ -8,6 +8,8 @@
     <ItemGroup>
         <Compile Include="Library.fs" />
         <Compile Include="WorkoutStorage.fs" />
+        <Compile Include="ExerciseStorage.fs" />
+        <Compile Include="SetStorage.fs" />
         <Compile Include="UserStorage.fs" />
         <None Include="Validation.fsx" />
     </ItemGroup>
