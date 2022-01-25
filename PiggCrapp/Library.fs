@@ -169,11 +169,16 @@ module ExerciseName =
         | TooLong -> Error [ "Exercise name can't be more than 50 characters." ]
         | SpecialChars -> Error [ "Exercise name can't contain numbers or special chars." ]
         | ValidExerciseName -> trim |> Ok
+        
+    let toString (ExerciseName name) = name
 
 type WorkoutId = WorkoutId of Guid
 
 module WorkoutId =
     let toGuid (WorkoutId id) = id
+
+module ExerciseId =
+    let toGuid (ExerciseId id) = id
 
 type Exercise =
     { ExerciseId : ExerciseId
