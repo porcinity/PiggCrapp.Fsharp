@@ -5,7 +5,8 @@ open WorkoutModel
 
 let connStr = "Host=localhost;Database=PiggCrapp;Username=pigg"
 
-let findUsersAsync =
+
+let findUsersAsync () =
     connStr
     |> Sql.connect
     |> Sql.query "select * from users"
