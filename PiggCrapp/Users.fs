@@ -1,6 +1,8 @@
 module PiggCrapp.Users
 
 open System
+open System.Text.RegularExpressions
+open PiggCrapp.Measurements
 
 
 type UserId = UserId of Guid
