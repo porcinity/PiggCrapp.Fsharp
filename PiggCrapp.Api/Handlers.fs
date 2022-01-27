@@ -63,14 +63,12 @@ let getUserHandler id next ctx = task {
 
 let postUserHandler next (ctx: HttpContext) = task {
     let! dto = ctx.BindJsonAsync<PostUserDto.T> ()
-    let name = UserName.fromString dto.Name
-    let weight = dto.Weight * 1.0<lbs> |> UserWeight.create
-    let userResult = User.create <!> name <*> weight
-    match userResult with
+    match PostUserDto.toDomain dto with
     | Ok user ->
         let! insert = insertUserAsync user
+        let response = getUserDto.fromDomain user
         ctx.SetStatusCode 201
-        return! json insert next ctx
+        return! json response next ctx
     | Error e ->
         return! RequestErrors.BAD_REQUEST e next ctx
 }
