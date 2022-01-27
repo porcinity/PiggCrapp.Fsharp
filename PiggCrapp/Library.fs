@@ -219,9 +219,8 @@ type Workout =
     
 module Workout =
     let create variation owner =
-        let today = DateTime.Now
         { WorkoutId = WorkoutId <| Guid.NewGuid()
-          Date = today
+          Date = DateTime.Now
           Variation = variation
           Exercises = []
           Owner = owner.UserId }
