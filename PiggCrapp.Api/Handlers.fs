@@ -57,7 +57,8 @@ let getUserHandler id next ctx = task {
 let postUserHandler next (ctx: HttpContext) = task {
     let! dto = ctx.BindJsonAsync<PostUserDto.T> ()
     let name = UserName.fromString dto.Name
-    let userResult = User.create <!> name
+    let weight = dto.Weight * 1.0<lbs> |> UserWeight.create
+    let userResult = User.create <!> name <*> weight
     match userResult with
     | Ok user ->
         let! insert = insertUserAsync user
