@@ -231,6 +231,23 @@ module UserName =
         | ValidExerciseName -> UserName trim |> Ok
         
     let toString (UserName name) = name
+    
+type UserWeight = UserWeight of double<lbs>
+
+module UserWeight =
+    let (|TooHeavy|TooLight|Good|) n =
+        match n with
+        | x when x > 400.0<lbs> -> TooHeavy
+        | x when x < 80.0<lbs> -> TooLight
+        | _ -> Good
+        
+    let create num =
+        match num with
+        | TooHeavy -> Error [ "Weight must be less than or equal to 400 lbs" ]
+        | TooLight -> Error [ "Weight must be greater than or equal to 80 lbs" ]
+        | Good -> Ok <| UserWeight num
+        
+    let toFloat (UserWeight num) = num / 1.0<lbs>
 
 type User =
     { UserId : UserId
