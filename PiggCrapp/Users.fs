@@ -3,12 +3,7 @@ module PiggCrapp.Users
 open System
 open System.Text.RegularExpressions
 open PiggCrapp.Measurements
-
-
-type UserId = UserId of Guid
-
-module UserId =
-    let toGuid (UserId id) = id
+open PiggCrapp.Ids
 
 type UserName = UserName of string
 
