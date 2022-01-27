@@ -18,20 +18,24 @@ let (<*>) = apply
 
 type getUserDto =
     { Id : Guid
-      Name : string }
+      Name : string
+      Weight : double }
 
 module getUserDto =
     let fromDomain (user: User) =
         { Id = UserId.toGuid user.UserId
-          Name = UserName.toString user.Name }
+          Name = UserName.toString user.Name
+          Weight = UserWeight.toFloat user.Weight }
         
 module PostUserDto =
     type T =
-        { Name : string }
+        { Name : string
+          Weight : double }
         
     let toDomain dto =
         { UserId = Guid.NewGuid() |> UserId
-          Name = dto.Name |>UserName }
+          Name = dto.Name |>UserName
+          Weight = dto.Weight * 1.0<lbs> |> UserWeight }
 
 let getUsersHandler next ctx = task {
     let! users = findUsersAsync ()
