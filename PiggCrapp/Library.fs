@@ -197,7 +197,7 @@ module Exercise =
           Sets = []
           WorkoutId = workoutId }
         
-    let changeName exercise name =
+    let changeName (exercise: Exercise) name =
         { exercise with Name = name }
     
     let addSet exercise set =
