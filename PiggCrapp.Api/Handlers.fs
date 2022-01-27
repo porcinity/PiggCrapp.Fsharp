@@ -9,6 +9,16 @@ open PiggCrapp.Domain.Measurements
 open PiggCrapp.UserStorage
 open FSharpPlus
 
+let apply fResult xResult =
+    match fResult,xResult with
+    | Ok f, Ok x -> Ok (f x)
+    | Error ex, Ok _ -> Error ex
+    | Ok _, Error ex -> Error ex
+    | Error ex1, Error ex2 -> Error (ex1 @ ex2)
+
+let (<!>) = Result.map
+let (<*>) = apply
+
 type getUserDto =
     { Id : Guid
       Name : string
