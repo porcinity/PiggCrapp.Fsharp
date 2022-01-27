@@ -39,9 +39,10 @@ module PostUserDto =
           Weight : double }
         
     let toDomain dto =
-        { UserId = Guid.NewGuid() |> UserId
-          Name = dto.Name |>UserName
-          Weight = dto.Weight * 1.0<lbs> |> UserWeight }
+        let name = UserName.fromString dto.Name
+        let age = UserAge.fromInt dto.Age
+        let weight = dto.Weight * 1.0<lbs> |> UserWeight.create
+        User.create <!> name <*> age <*> weight
 
 let getUsersHandler next ctx = task {
     let! users = findUsersAsync ()
