@@ -34,8 +34,6 @@ module WorkoutVariation =
             | "Lower C" -> Ok LowerC
             | _ -> Error [ "Invalid input." ]
 
-[<Measure>] type lbs
-
 type Weight = Weight of double
 
 module Weight =
