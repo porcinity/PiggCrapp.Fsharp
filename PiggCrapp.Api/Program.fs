@@ -11,11 +11,16 @@ let webApp =
     choose [
         GET >=>
             choose [
-                route "/users" >=> getUsers        
+                route "/users" >=> getUsersHandler
+                routef "/users/%O" getUserHandler
             ]
         POST >=>
             choose [
-                route "/users" >=> postUser
+                route "/users" >=> postUserHandler
+            ]
+        DELETE >=>
+            choose [
+                routef "/users/%O" deleteUserHandler
             ]
         ]
 
