@@ -72,7 +72,7 @@ let postUserHandler next (ctx: HttpContext) = task {
     let! dto = ctx.BindJsonAsync<PostUserDto.T> ()
     match PostUserDto.toDomain dto with
     | Ok user ->
-        let! insert = insertUserAsync user
+        insertUserAsync user |> Async.AwaitTask |> Async.RunSynchronously |> ignore
         let response = getUserDto.fromDomain user
         ctx.SetStatusCode 201
         return! json response next ctx
