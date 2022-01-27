@@ -3,6 +3,7 @@ module PiggCrapp.Api.Handlers
 open System
 open Microsoft.AspNetCore.Http
 open Giraffe
+open PiggCrapp.Users
 open WorkoutModel
 open PiggCrapp.UserStorage
     
@@ -19,17 +20,22 @@ let (<*>) = apply
 type getUserDto =
     { Id : Guid
       Name : string
-      Weight : double }
+      Age : int
+      Weight : double
+      JoinDate : string }
 
 module getUserDto =
     let fromDomain (user: User) =
         { Id = UserId.toGuid user.UserId
           Name = UserName.toString user.Name
-          Weight = UserWeight.toFloat user.Weight }
+          Age = UserAge.toInt user.Age
+          Weight = UserWeight.toFloat user.Weight
+          JoinDate = user.CreatedDate.ToString("yyyy-MM-dd") }
         
 module PostUserDto =
     type T =
         { Name : string
+          Age : int
           Weight : double }
         
     let toDomain dto =
