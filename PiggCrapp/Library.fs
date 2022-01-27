@@ -32,7 +32,7 @@ module WorkoutVariation =
             | "Lower B" -> LowerB
             | "Lower C" -> LowerC
 
-//[<Measure>] type lbs
+[<Measure>] type lbs
 
 type Weight = Weight of double
 
