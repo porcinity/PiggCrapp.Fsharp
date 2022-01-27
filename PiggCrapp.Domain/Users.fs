@@ -73,3 +73,9 @@ module User =
           Age = age
           Weight = weight
           CreatedDate = DateTime.Now }
+
+    let update user name age weight =
+        { user with
+              Name = name
+              Age = age
+              Weight = weight }
