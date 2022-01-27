@@ -72,7 +72,7 @@ let deleteUserHandler userId next (ctx: HttpContext) = task {
     match! deleteUserAsync <| UserId userId with
     | 1 ->
         ctx.SetStatusCode 204
-        return! json {|  |} next ctx
+        return! json {||} next ctx
     | _ ->
-        return! RequestErrors.BAD_REQUEST "No user with that Id" next ctx     
+        return! RequestErrors.BAD_REQUEST {| message = "no user with that Id" |} next ctx     
 }
