@@ -17,7 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PiggCrapp\PiggCrapp.fsproj" />
+      <ProjectReference Include="..\PiggCrapp.Domain\PiggCrapp.Domain.fsproj" />
     </ItemGroup>
 
 </Project>

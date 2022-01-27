@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PiggCrapp", "PiggCrapp\PiggCrapp.fsproj", "{1BDBD853-4CF8-480F-B709-28C318E0AF01}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PiggCrapp.Domain", "PiggCrapp.Domain\PiggCrapp.Domain.fsproj", "{1BDBD853-4CF8-480F-B709-28C318E0AF01}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PiggCrapp.Api", "PiggCrapp.Api\PiggCrapp.Api.fsproj", "{390D3FD9-EF71-4CFC-99FE-0DD673C4E412}"
 EndProject
