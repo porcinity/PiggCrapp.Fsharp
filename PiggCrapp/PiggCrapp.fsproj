@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="Users.fs" />
         <Compile Include="Library.fs" />
         <Compile Include="WorkoutStorage.fs" />
         <Compile Include="ExerciseStorage.fs" />
