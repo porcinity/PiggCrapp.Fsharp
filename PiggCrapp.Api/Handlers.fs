@@ -46,10 +46,11 @@ let postUser next (ctx: HttpContext) = task {
         return! RequestErrors.BAD_REQUEST e next ctx
 }
 
-let getUsers next ctx = task {
-    let! users = findUsersAsync
-    let dtos =
-        users
-        |> List.map (fun x -> getUserDto.fromDomain x)
-    return! json dtos next ctx 
+let deleteUserHandler userId next (ctx: HttpContext) = task {
+    match! deleteUserAsync <| UserId userId with
+    | 1 ->
+        ctx.SetStatusCode 204
+        return! json {|  |} next ctx
+    | _ ->
+        return! RequestErrors.BAD_REQUEST "No user with that Id" next ctx     
 }
