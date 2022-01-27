@@ -251,12 +251,14 @@ module UserWeight =
 
 type User =
     { UserId : UserId
-      Name : UserName }
+      Name : UserName
+      Weight : UserWeight }
     
 module User =
-    let create userName =
+    let create userName weight =
         { UserId = Guid.NewGuid() |> UserId
-          Name = userName }
+          Name = userName
+          Weight = weight }
 
 type Workout =
     { WorkoutId : WorkoutId
