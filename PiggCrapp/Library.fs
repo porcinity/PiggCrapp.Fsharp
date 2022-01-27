@@ -235,6 +235,11 @@ module UserName =
 type User =
     { UserId : UserId
       Name : UserName }
+    
+module User =
+    let create userName =
+        { UserId = Guid.NewGuid() |> UserId
+          Name = userName }
 
 type Workout =
     { WorkoutId : WorkoutId
