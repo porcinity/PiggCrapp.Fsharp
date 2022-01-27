@@ -80,6 +80,30 @@ let postUserHandler next (ctx: HttpContext) = task {
         return! RequestErrors.BAD_REQUEST e next ctx
 }
 
+let updateUserHandler userId next (ctx:HttpContext) = task {
+    let! dto = ctx.BindJsonAsync<PostUserDto.T> ()
+    let! user =
+        userId
+        |> findUserAsync
+        |> Task.map List.tryHead
+    match user with
+    | Some user ->
+        let name = UserName.fromString dto.Name
+        let age = UserAge.fromInt dto.Age
+        let weight = UserWeight.create <| dto.Weight * 1.0<lbs>
+        let result = User.update user <!> name <*> age <*> weight
+        match result with
+        | Ok resultValue ->
+            updateUserAsnc resultValue |> Async.AwaitTask |> Async.RunSynchronously |> ignore
+            ctx.SetStatusCode 201
+            return! json {||} next ctx
+        | Error e ->
+            return! RequestErrors.UNPROCESSABLE_ENTITY e next ctx
+    | None ->
+        ctx.SetStatusCode 404
+        return! json {| |} next ctx
+}
+
 let deleteUserHandler userId next (ctx: HttpContext) = task {
     match! deleteUserAsync <| UserId userId with
     | 1 ->
