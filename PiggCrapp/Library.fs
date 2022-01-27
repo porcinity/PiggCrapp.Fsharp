@@ -2,6 +2,7 @@
 
 open System
 open System.Text.RegularExpressions
+open PiggCrapp.Users
     
 type WorkoutVariation =
     | UpperA
@@ -207,58 +208,6 @@ module Exercise =
             |> List.filter (fun x -> x <> set)
         { exercise with Sets = setsWithout }
 
-type UserId = UserId of Guid
-
-module UserId =
-    let toGuid (UserId id) = id
-
-type UserName = UserName of string
-
-module UserName =
-    let (|Empty|TooLong|SpecialChars|ValidExerciseName|) (str: string) =
-        match str with
-        | "" -> Empty
-        | x when String.length(x) > 50 -> TooLong
-        | x when Regex.IsMatch(x, "^[a-zA-Z][a-zA-Z\s]*$") = false -> SpecialChars
-        | _ -> ValidExerciseName
-        
-    let fromString (name: string) =
-        let trim = name.TrimStart(' ').TrimEnd(' ')
-        match trim with
-        | Empty -> Error [ "Exercise name can't be blank." ]
-        | TooLong -> Error [ "Exercise name can't be more than 50 characters." ]
-        | SpecialChars -> Error [ "Exercise name can't contain numbers or special chars." ]
-        | ValidExerciseName -> UserName trim |> Ok
-        
-    let toString (UserName name) = name
-    
-type UserWeight = UserWeight of double<lbs>
-
-module UserWeight =
-    let (|TooHeavy|TooLight|Good|) n =
-        match n with
-        | x when x > 400.0<lbs> -> TooHeavy
-        | x when x < 80.0<lbs> -> TooLight
-        | _ -> Good
-        
-    let create num =
-        match num with
-        | TooHeavy -> Error [ "Weight must be less than or equal to 400 lbs" ]
-        | TooLight -> Error [ "Weight must be greater than or equal to 80 lbs" ]
-        | Good -> Ok <| UserWeight num
-        
-    let toFloat (UserWeight num) = num / 1.0<lbs>
-
-type User =
-    { UserId : UserId
-      Name : UserName
-      Weight : UserWeight }
-    
-module User =
-    let create userName weight =
-        { UserId = Guid.NewGuid() |> UserId
-          Name = userName
-          Weight = weight }
 
 type Workout =
     { WorkoutId : WorkoutId
