@@ -47,6 +47,20 @@ let insertUserAsync user =
         "@date", Sql.timestamp <| user.CreatedDate
     ]
     |> Sql.executeNonQueryAsync
+
+let updateUserAsnc user =
+    connStr
+    |> Sql.connect
+    |> Sql.query "update users set
+                  user_name = @name, user_age = @age, user_weight = @weight
+                  where user_id = @id"
+    |> Sql.parameters [
+        "@name", Sql.text <| UserName.toString user.Name
+        "@age", Sql.int <| UserAge.toInt user.Age
+        "@weight", Sql.double <| UserWeight.toFloat user.Weight
+        "@id", Sql.uuid <| UserId.toGuid user.UserId
+    ]
+    |> Sql.executeNonQueryAsync
     
 let deleteUserAsync userId =
     connStr
