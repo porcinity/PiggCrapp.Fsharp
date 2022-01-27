@@ -18,6 +18,10 @@ let webApp =
             choose [
                 route "/users" >=> postUserHandler
             ]
+        PUT >=>
+            choose [
+                routef "/users/%O" updateUserHandler
+            ]
         DELETE >=>
             choose [
                 routef "/users/%O" deleteUserHandler
