@@ -26,12 +26,13 @@ module WorkoutVariation =
     let fromString =
         fun str ->
             match str with
-            | "Upper A" -> UpperA
-            | "Upper B" -> UpperB
-            | "Upper C" -> UpperC
-            | "Lower A" -> LowerA
-            | "Lower B" -> LowerB
-            | "Lower C" -> LowerC
+            | "Upper A" -> Ok UpperA
+            | "Upper B" -> Ok UpperB
+            | "Upper C" -> Ok UpperC
+            | "Lower A" -> Ok LowerA
+            | "Lower B" -> Ok LowerB
+            | "Lower C" -> Ok LowerC
+            | _ -> Error [ "Invalid input." ]
 
 [<Measure>] type lbs
 
