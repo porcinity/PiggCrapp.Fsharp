@@ -38,9 +38,9 @@ let insertUserAsync user =
     ]
     |> Sql.executeNonQueryAsync
     
-let deleteUserAsync user =
+let deleteUserAsync userId =
     connStr
     |> Sql.connect
     |> Sql.query "delete from users where user_id = @id"
-    |> Sql.parameters [ "@id", Sql.uuid <| UserId.toGuid user.UserId ]
+    |> Sql.parameters [ "@id", Sql.uuid <| UserId.toGuid userId ]
     |> Sql.executeNonQueryAsync
