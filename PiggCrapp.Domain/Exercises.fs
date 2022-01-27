@@ -1,10 +1,10 @@
-module PiggCrapp.Exercises
+module PiggCrapp.Domain.Exercises
 
 open System
 open System.Text.RegularExpressions
-open PiggCrapp.Ids
-open PiggCrapp.Sets
-open PiggCrapp.ExerciseNotes
+open PiggCrapp.Domain.Ids
+open PiggCrapp.Domain.Sets
+open PiggCrapp.Domain.ExerciseNotes
 
 type ExerciseName = ExerciseName of string
 

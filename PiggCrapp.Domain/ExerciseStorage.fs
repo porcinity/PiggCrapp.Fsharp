@@ -1,7 +1,8 @@
 module PiggCrapp.ExerciseStorage
 
 open Npgsql.FSharp
-open PiggCrapp.Ids
+open PiggCrapp.Domain.Ids
+open PiggCrapp.Domain.Exercises
 
 let connStr = "Host=localhost;Database=PiggCrapp;Username=test;Password=test"
 

@@ -1,9 +1,9 @@
 module PiggCrapp.UserStorage
 
 open Npgsql.FSharp
-open PiggCrapp.Ids
-open PiggCrapp.Users
-open PiggCrapp.Measurements
+open PiggCrapp.Domain.Ids
+open PiggCrapp.Domain.Users
+open PiggCrapp.Domain.Measurements
 
 let connStr = "Host=localhost;Database=PiggCrapp;Username=pigg"
 

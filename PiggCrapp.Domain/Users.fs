@@ -1,9 +1,9 @@
-module PiggCrapp.Users
+module PiggCrapp.Domain.Users
 
 open System
 open System.Text.RegularExpressions
-open PiggCrapp.Measurements
-open PiggCrapp.Ids
+open PiggCrapp.Domain.Measurements
+open PiggCrapp.Domain.Ids
 
 type UserName = UserName of string
 
@@ -58,6 +58,7 @@ module UserAge =
         | Good -> Ok <| UserAge num
 
     let toInt (UserAge i) = i
+    
 type User =
     { UserId : UserId
       Name : UserName

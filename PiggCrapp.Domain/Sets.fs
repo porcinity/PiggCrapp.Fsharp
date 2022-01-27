@@ -1,7 +1,7 @@
-﻿module PiggCrapp.Sets
+﻿module PiggCrapp.Domain.Sets
 
 open System
-open PiggCrapp.Ids
+open PiggCrapp.Domain.Ids
 
 type Weight = Weight of double
 

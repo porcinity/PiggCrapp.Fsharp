@@ -1,4 +1,4 @@
-module PiggCrapp.ExerciseNotes
+module PiggCrapp.Domain.ExerciseNotes
 
 type SeatHeight =
     | SeatHeight of int

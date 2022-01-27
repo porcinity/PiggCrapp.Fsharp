@@ -1,3 +1,3 @@
-module PiggCrapp.Measurements
+module PiggCrapp.Domain.Measurements
 
 [<Measure>] type lbs

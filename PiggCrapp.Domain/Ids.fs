@@ -1,4 +1,4 @@
-module PiggCrapp.Ids
+module PiggCrapp.Domain.Ids
 
 open System
 

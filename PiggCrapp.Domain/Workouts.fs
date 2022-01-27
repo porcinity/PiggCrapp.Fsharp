@@ -1,7 +1,8 @@
-module PiggCrapp.Workouts
+module PiggCrapp.Domain.Workouts
 
 open System
-open PiggCrapp.Ids
+open PiggCrapp.Domain.Exercises
+open PiggCrapp.Domain.Ids
 
 type WorkoutVariation =
     | UpperA
@@ -22,16 +23,16 @@ module WorkoutVariation =
             | LowerB -> "Lower B"
             | LowerC -> "Lower C"
             
+    // Come back to this. Make function return a Result? Requires large refactoring of ExerciseStorage.
     let fromString =
         fun str ->
             match str with
-            | "Upper A" -> Ok UpperA
-            | "Upper B" -> Ok UpperB
-            | "Upper C" -> Ok UpperC
-            | "Lower A" -> Ok LowerA
-            | "Lower B" -> Ok LowerB
-            | "Lower C" -> Ok LowerC
-            | _ -> Error [ "Invalid input." ]
+            | "Upper A" -> UpperA
+            | "Upper B" -> UpperB
+            | "Upper C" -> UpperC
+            | "Lower A" -> LowerA
+            | "Lower B" -> LowerB
+            | "Lower C" -> LowerC
 
 type Workout =
     { WorkoutId : WorkoutId
@@ -44,12 +45,12 @@ module WorkoutId =
     let toGuid (WorkoutId guid) = guid
     
 module Workout =
-    let create variation owner =
+    let create variation userId =
         { WorkoutId = WorkoutId <| Guid.NewGuid()
           Date = DateTime.Now
           Variation = variation
           Exercises = []
-          Owner = owner.UserId }
+          Owner = userId }
     
     let changeVariation workout variation =
         { workout with Variation = variation }
