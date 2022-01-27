@@ -3,7 +3,7 @@ module PiggCrapp.UserStorage
 open Npgsql.FSharp
 open WorkoutModel
 
-let connStr = "Host=localhost;Database=PiggCrapp;Username=test;Password=test"
+let connStr = "Host=localhost;Database=PiggCrapp;Username=pigg"
 
 let findUsersAsync =
     connStr
