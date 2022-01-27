@@ -50,9 +50,7 @@ let getUserHandler id next ctx = task {
         id
         |> findUserAsync
     let result = user |> List.head
-    let dto =
-        { Id = UserId.toGuid result.UserId
-          Name = UserName.toString result.Name }
+    let dto = getUserDto.fromDomain result
     return! json dto next ctx
 }
 
