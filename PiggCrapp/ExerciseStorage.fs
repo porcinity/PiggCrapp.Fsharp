@@ -5,7 +5,6 @@ open WorkoutModel
 
 let connStr = "Host=localhost;Database=PiggCrapp;Username=test;Password=test"
 
-
 let findExercisesAsync workoutId =
     connStr
     |> Sql.connect
