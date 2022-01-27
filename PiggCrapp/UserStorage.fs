@@ -1,6 +1,7 @@
 module PiggCrapp.UserStorage
 
 open Npgsql.FSharp
+open PiggCrapp.Ids
 open PiggCrapp.Users
 open PiggCrapp.Measurements
 
