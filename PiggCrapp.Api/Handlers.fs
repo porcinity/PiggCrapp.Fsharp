@@ -77,7 +77,7 @@ let postUserHandler next (ctx: HttpContext) = task {
         ctx.SetStatusCode 201
         return! json response next ctx
     | Error e ->
-        return! RequestErrors.BAD_REQUEST e next ctx
+        return! RequestErrors.UNPROCESSABLE_ENTITY {| errors = e |} next ctx
 }
 
 let updateUserHandler userId next (ctx:HttpContext) = task {
@@ -110,5 +110,5 @@ let deleteUserHandler userId next (ctx: HttpContext) = task {
         ctx.SetStatusCode 204
         return! json {||} next ctx
     | _ ->
-        return! RequestErrors.BAD_REQUEST {| message = "no user with that Id" |} next ctx     
+        return! RequestErrors.NOT_FOUND {| message = "no user with that Id" |} next ctx
 }
