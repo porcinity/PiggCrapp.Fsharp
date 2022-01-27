@@ -215,6 +215,21 @@ module UserId =
 type UserName = UserName of string
 
 module UserName =
+    let (|Empty|TooLong|SpecialChars|ValidExerciseName|) (str: string) =
+        match str with
+        | "" -> Empty
+        | x when String.length(x) > 50 -> TooLong
+        | x when Regex.IsMatch(x, "^[a-zA-Z][a-zA-Z\s]*$") = false -> SpecialChars
+        | _ -> ValidExerciseName
+        
+    let fromString (name: string) =
+        let trim = name.TrimStart(' ').TrimEnd(' ')
+        match trim with
+        | Empty -> Error [ "Exercise name can't be blank." ]
+        | TooLong -> Error [ "Exercise name can't be more than 50 characters." ]
+        | SpecialChars -> Error [ "Exercise name can't contain numbers or special chars." ]
+        | ValidExerciseName -> UserName trim |> Ok
+        
     let toString (UserName name) = name
 
 type User =
