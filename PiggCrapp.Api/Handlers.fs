@@ -3,19 +3,11 @@ module PiggCrapp.Api.Handlers
 open System
 open Microsoft.AspNetCore.Http
 open Giraffe
-open PiggCrapp.Users
-open WorkoutModel
+open PiggCrapp.Domain.Users
+open PiggCrapp.Domain.Ids
+open PiggCrapp.Domain.Measurements
 open PiggCrapp.UserStorage
-    
-let apply fResult xResult =
-    match fResult,xResult with
-    | Ok f, Ok x -> Ok (f x)
-    | Error ex, Ok _ -> Error ex
-    | Ok _, Error ex -> Error ex
-    | Error ex1, Error ex2 -> Error (ex1 @ ex2)
-
-let (<!>) = Result.map
-let (<*>) = apply
+open FSharpPlus
 
 type getUserDto =
     { Id : Guid
@@ -48,7 +40,7 @@ let getUsersHandler next ctx = task {
     let! users = findUsersAsync ()
     let dtos =
         users
-        |> List.map (fun x -> getUserDto.fromDomain x)
+        |> List.map getUserDto.fromDomain
     return! json dtos next ctx 
 }
 
@@ -56,9 +48,14 @@ let getUserHandler id next ctx = task {
     let! user =
         id
         |> findUserAsync
-    let result = user |> List.head
-    let dto = getUserDto.fromDomain result
-    return! json dto next ctx
+        |> Task.map List.tryHead
+    match user with
+    | Some u ->
+        let dto = getUserDto.fromDomain u
+        return! json dto next ctx
+    | None ->
+        ctx.SetStatusCode 404
+        return! json {| message = "No user found with that Id" |} next ctx
 }
 
 let postUserHandler next (ctx: HttpContext) = task {
