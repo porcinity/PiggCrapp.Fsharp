@@ -38,7 +38,7 @@ module PostUserDto =
     type T =
         { Name : string
           Age : int
-          Weight : double }
+          Weight : float }
         
     let toDomain dto =
         let name = UserName.fromString dto.Name
