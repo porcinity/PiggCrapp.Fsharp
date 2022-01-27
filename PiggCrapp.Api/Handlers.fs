@@ -33,7 +33,26 @@ module PostUserDto =
         { UserId = Guid.NewGuid() |> UserId
           Name = dto.Name |>UserName }
 
-let postUser next (ctx: HttpContext) = task {
+let getUsersHandler next ctx = task {
+    let! users = findUsersAsync ()
+    let dtos =
+        users
+        |> List.map (fun x -> getUserDto.fromDomain x)
+    return! json dtos next ctx 
+}
+
+let getUserHandler id next ctx = task {
+    let! user =
+        id
+        |> findUserAsync
+    let result = user |> List.head
+    let dto =
+        { Id = UserId.toGuid result.UserId
+          Name = UserName.toString result.Name }
+    return! json dto next ctx
+}
+
+let postUserHandler next (ctx: HttpContext) = task {
     let! dto = ctx.BindJsonAsync<PostUserDto.T> ()
     let name = UserName.fromString dto.Name
     let userResult = User.create <!> name
