@@ -18,9 +18,9 @@ module UserName =
     let fromString (name: string) =
         let trim = name.TrimStart(' ').TrimEnd(' ')
         match trim with
-        | Empty -> Error [ "Exercise name can't be blank." ]
-        | TooLong -> Error [ "Exercise name can't be more than 50 characters." ]
-        | SpecialChars -> Error [ "Exercise name can't contain numbers or special chars." ]
+        | Empty -> Error [ "User's name can't be blank." ]
+        | TooLong -> Error [ "User's name can't be more than 50 characters." ]
+        | SpecialChars -> Error [ "User's name can't contain numbers or special chars." ]
         | ValidExerciseName -> UserName trim |> Ok
         
     let toString (UserName name) = name
@@ -36,8 +36,8 @@ module UserWeight =
         
     let create num =
         match num with
-        | TooHeavy -> Error [ "Weight must be less than or equal to 400 lbs" ]
-        | TooLight -> Error [ "Weight must be greater than or equal to 80 lbs" ]
+        | TooHeavy -> Error [ "User's weight must be less than or equal to 400 lbs" ]
+        | TooLight -> Error [ "User's weight must be greater than or equal to 80 lbs" ]
         | Good -> Ok <| UserWeight num
         
     let toFloat (UserWeight num) = num / 1.0<lbs>
