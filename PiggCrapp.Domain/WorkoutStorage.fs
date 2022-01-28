@@ -4,27 +4,28 @@ open Npgsql.FSharp
 open PiggCrapp.Domain.Ids
 open PiggCrapp.Domain.Workouts
 
-let connStr = "Host=localhost;Database=PiggCrapp;Username=test;Password=test"
+let connStr = "Host=localhost;Database=PiggCrapp;Username=pigg"
     
 let findWorkoutsAsync userId =
     connStr
     |> Sql.connect
-    |> Sql.query "select * from workouts where workout_owner = @id"
+    |> Sql.query "select * from workouts where user_id = @id"
     |> Sql.parameters [ "@id", Sql.uuid <| UserId.toGuid userId]
-    |> Sql.execute (fun read ->
+    |> Sql.executeAsync (fun read ->
         {
            WorkoutId = read.uuid "workout_id" |> WorkoutId
            Date = read.dateTime "workout_date"
            Variation = read.text "workout_variation" |> WorkoutVariation.fromString
            Exercises = []
-           Owner = read.uuid "workout_owner" |> UserId
+           Owner = read.uuid "user_id" |> UserId
         })
 
 let findWorkoutAsync workoutId =
     connStr
     |> Sql.connect
-    |> Sql.query "select workout_date, workout_variation, workout_owner
-                 from workouts where workout_id = @workoutId"
+    |> Sql.query "select workout_id, workout_date, workout_variation, user_id
+                 from workouts
+                 where workout_id = @workoutId"
     |> Sql.parameters [ "@workoutId", Sql.uuid workoutId ]
     |> Sql.executeAsync (fun read ->
         {
@@ -32,24 +33,39 @@ let findWorkoutAsync workoutId =
            Date = read.dateTime "workout_date"
            Variation = read.text "workout_variation" |> WorkoutVariation.fromString
            Exercises = []
-           Owner = read.uuid "workout_owner" |> UserId
+           Owner = read.uuid "user_id" |> UserId
         })
 
 let insertWorkoutAsync workout =
     connStr
     |> Sql.connect
     |> Sql.query "insert into workouts
-                  (workout_id, workout_date, workout_variation, workout_owner)
+                  (workout_id, workout_date, workout_variation, user_id)
                   values (@id, @date, @variation, @owner)"
     |> Sql.parameters [
         "@id", Sql.uuid <| WorkoutId.toGuid workout.WorkoutId
         "@date", Sql.timestamp workout.Date
         "@variation", Sql.text <| WorkoutVariation.toString workout.Variation
+        "@owner", Sql.uuid <| UserId.toGuid workout.Owner
     ]
+    |> Sql.executeNonQueryAsync
+
+let updateWorkoutAsync workout =
+    connStr
+    |> Sql.connect
+    |> Sql.query "update workouts set
+                  workout_date = @date, workout_variation = @variation
+                  where workout_id = @id"
+    |> Sql.parameters [
+        "@date", Sql.timestamp workout.Date
+        "@variation", Sql.text <| WorkoutVariation.toString workout.Variation
+        "@id", Sql.uuid <| WorkoutId.toGuid workout.WorkoutId
+    ]
+    |> Sql.executeNonQueryAsync
     
-let deleteWorkoutAsync workout =
+let deleteWorkoutAsync workoutId =
     connStr
     |> Sql.connect
     |> Sql.query "delete from workouts where workout_id = @id"
-    |> Sql.parameters [ "@id", Sql.uuid <| WorkoutId.toGuid workout.WorkoutId ]
+    |> Sql.parameters [ "@id", Sql.uuid <| WorkoutId.toGuid workoutId]
     |> Sql.executeNonQueryAsync
