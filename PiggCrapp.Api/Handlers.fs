@@ -46,13 +46,15 @@ module PostUserDto =
         let weight = dto.Weight * 1.0<lbs> |> UserWeight.create
         User.create <!> name <*> age <*> weight
 
-let getUsersHandler next ctx = task {
-    let! users = findUsersAsync ()
-    let dtos =
-        users
-        |> List.map getUserDto.fromDomain
-    return! json dtos next ctx 
-}
+let getUsersHandler : HttpHandler =
+    fun next ctx ->
+        task {
+            let! users = findUsersAsync ()
+            let dtos =
+                users
+                |> List.map getUserDto.fromDomain
+            return! json dtos next ctx
+        }
 
 let getUserHandler id next ctx = task {
     let! user =
@@ -68,19 +70,21 @@ let getUserHandler id next ctx = task {
         return! json {| message = "No user found with that Id" |} next ctx
 }
 
-let postUserHandler next (ctx: HttpContext) = task {
-    let! dto = ctx.BindJsonAsync<PostUserDto.T> ()
-    match PostUserDto.toDomain dto with
-    | Ok user ->
-        insertUserAsync user |> Async.AwaitTask |> Async.RunSynchronously |> ignore
-        let response = getUserDto.fromDomain user
-        ctx.SetStatusCode 201
-        return! json response next ctx
-    | Error e ->
-        return! RequestErrors.UNPROCESSABLE_ENTITY {| errors = e |} next ctx
-}
+let postUserHandler : HttpHandler =
+    fun next ctx -> task {
+        let! dto = ctx.BindJsonAsync<PostUserDto.T> ()
+        match PostUserDto.toDomain dto with
+        | Ok user ->
+            insertUserAsync user |> Async.AwaitTask |> Async.RunSynchronously |> ignore
+            let response = getUserDto.fromDomain user
+            ctx.SetStatusCode 201
+            return! json response next ctx
+        | Error e ->
+            return! RequestErrors.UNPROCESSABLE_ENTITY {| errors = e |} next ctx
+    }
 
-let updateUserHandler userId next (ctx:HttpContext) = task {
+let updateUserHandler userId : HttpHandler =
+    fun next ctx -> task {
     let! dto = ctx.BindJsonAsync<PostUserDto.T> ()
     let! user =
         userId
@@ -104,11 +108,12 @@ let updateUserHandler userId next (ctx:HttpContext) = task {
         return! json {| |} next ctx
 }
 
-let deleteUserHandler userId next (ctx: HttpContext) = task {
-    match! deleteUserAsync <| UserId userId with
-    | 1 ->
-        ctx.SetStatusCode 204
-        return! json {||} next ctx
-    | _ ->
-        return! RequestErrors.NOT_FOUND {| message = "no user with that Id" |} next ctx
-}
+let deleteUserHandler userId : HttpHandler =
+    fun next ctx -> task {
+        match! deleteUserAsync <| UserId userId with
+        | 1 ->
+            ctx.SetStatusCode 204
+            return! json {||} next ctx
+        | _ ->
+            return! RequestErrors.NOT_FOUND {| message = "no user with that Id" |} next ctx
+    }
