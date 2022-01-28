@@ -2,11 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <RootNamespace>WebApplication1</RootNamespace>
+        <RootNamespace>PiggCrapp.Api</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
         <Compile Include="Handlers.fs" />
+        <Compile Include="WorkoutsHandlers.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
