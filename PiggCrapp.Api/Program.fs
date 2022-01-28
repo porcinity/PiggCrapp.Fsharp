@@ -5,6 +5,7 @@ open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open PiggCrapp.Api.Handlers
+open PiggCrapp.Api.WorkoutsHandlers
 open Giraffe
 
 let webApp =
@@ -13,18 +14,23 @@ let webApp =
             choose [
                 route "/users" >=> getUsersHandler
                 routef "/users/%O" getUserHandler
+                routef "/users/%O/workouts" getWorkoutsHandler
+                routef "/workouts/%O" getWorkoutHandler
             ]
         POST >=>
             choose [
                 route "/users" >=> postUserHandler
+                routef "/users/%O/workouts" postWorkoutHandler
             ]
         PUT >=>
             choose [
                 routef "/users/%O" updateUserHandler
+                routef "/workouts/%O" updateWorkoutHandler
             ]
         DELETE >=>
             choose [
                 routef "/users/%O" deleteUserHandler
+                routef "/workouts/%O" deleteWorkoutHandler
             ]
         ]
 
