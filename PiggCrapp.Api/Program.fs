@@ -7,6 +7,7 @@ open Microsoft.Extensions.DependencyInjection
 open PiggCrapp.Api.UsersHandlers
 open PiggCrapp.Api.WorkoutsHandlers
 open PiggCrapp.Api.ExercisesHandlers
+open PiggCrapp.Api.SetsHandlers
 open Giraffe
 
 let webApp =
@@ -19,6 +20,8 @@ let webApp =
                 routef "/workouts/%O" getWorkoutHandler
                 routef "/workouts/%O/exercises" getExercisesHandler
                 routef "/exercises/%O" getExerciseHandler
+                routef "/exercises/%O/sets" getSetsHandler
+                routef "/exercises/%O/sets/%i" getSetHandler
             ]
         POST >=>
             choose [
