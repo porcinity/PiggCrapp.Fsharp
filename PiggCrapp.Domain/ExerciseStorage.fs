@@ -1,20 +1,20 @@
 module PiggCrapp.ExerciseStorage
 
+open CommonExtensionsAndTypesForNpgsqlFSharp
 open Npgsql.FSharp
 open PiggCrapp.Domain.Ids
 open PiggCrapp.Domain.Exercises
 
-let connStr = "Host=localhost;Database=PiggCrapp;Username=test;Password=test"
+let connStr = "Host=localhost;Database=PiggCrapp;Username=pigg"
 
 let findExercisesAsync workoutId =
     connStr
     |> Sql.connect
-    |> Sql.query "select * from exercises
-                  from workouts w
-                  join exercises e on w.workout_id = e.workout_id
-                  where e.workout_id = @id" 
+    |> Sql.query "select *
+                  from exercises
+                  where workout_id = @id"
     |> Sql.parameters [ "@id", Sql.uuid <| WorkoutId.toGuid workoutId ]
-    |> Sql.execute (fun read ->
+    |> Sql.executeAsync (fun read ->
         {
            ExerciseId = read.uuid "exercise_id" |> ExerciseId
            Name = read.text "exercise_type" |> ExerciseName
@@ -26,9 +26,9 @@ let findExercisesAsync workoutId =
 let findExerciseAsync exerciseId =
     connStr
     |> Sql.connect
-    |> Sql.query "select * exercise where exercise_id = @id"
+    |> Sql.query "select * from exercises where exercise_id = @id"
     |> Sql.parameters [ "@id", Sql.uuid <| ExerciseId.toGuid exerciseId ]
-    |> Sql.execute (fun read ->
+    |> Sql.executeAsync (fun read ->
         {
            ExerciseId = read.uuid "exercise_id" |> ExerciseId
            Name = read.text "exercise_type" |> ExerciseName
@@ -41,11 +41,23 @@ let insertExerciseAsync exercise =
     connStr
     |> Sql.connect
     |> Sql.query "insert into exercises (exercise_id, exercise_type, workout_id)
-                  values (@exercise_id, @type, @workout_id"
+                  values (@exercise_id, @type, @workout_id)"
     |> Sql.parameters [
         "@exercise_id", Sql.uuid <| ExerciseId.toGuid exercise.ExerciseId
         "@type", Sql.text <| ExerciseName.toString exercise.Name
         "@workout_id", Sql.uuid <| WorkoutId.toGuid exercise.WorkoutId
+    ]
+    |> Sql.executeNonQueryAsync
+
+let updateExerciseAsync exercise =
+    connStr
+    |> Sql.connect
+    |> Sql.query "update exercises
+                  set exercise_type = @type
+                  where exercise_id = @id"
+    |> Sql.parameters [
+        "@type", Sql.string <| ExerciseName.toString exercise.Name
+        "@id", Sql.uuid <| ExerciseId.toGuid exercise.ExerciseId
     ]
     |> Sql.executeNonQueryAsync
     
