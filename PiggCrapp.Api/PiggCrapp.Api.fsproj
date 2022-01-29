@@ -6,8 +6,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Handlers.fs" />
+        <Compile Include="ExercisesHandlers.fs" />
         <Compile Include="WorkoutsHandlers.fs" />
+        <Compile Include="UsersHandlers.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
