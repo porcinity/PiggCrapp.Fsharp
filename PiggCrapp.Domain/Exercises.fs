@@ -22,7 +22,7 @@ module ExerciseName =
         | Empty -> Error [ "Exercise name can't be blank." ]
         | TooLong -> Error [ "Exercise name can't be more than 50 characters." ]
         | SpecialChars -> Error [ "Exercise name can't contain numbers or special chars." ]
-        | ValidExerciseName -> trim |> Ok
+        | ValidExerciseName -> ExerciseName trim |> Ok
         
     let toString (ExerciseName name) = name
         
@@ -34,7 +34,7 @@ type Exercise =
       WorkoutId : WorkoutId }
     
 module Exercise =
-    let create exerciseName exerciseNotes workoutId =
+    let create exerciseName workoutId =
         { ExerciseId = ExerciseId <| Guid.NewGuid()
           Name = exerciseName
           Notes = None
