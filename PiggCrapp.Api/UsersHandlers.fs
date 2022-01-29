@@ -1,4 +1,4 @@
-module PiggCrapp.Api.Handlers
+module PiggCrapp.Api.UsersHandlers
 
 open System
 open Microsoft.AspNetCore.Http
