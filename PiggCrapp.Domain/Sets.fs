@@ -37,10 +37,10 @@ module Reps =
         
     let toInt (Reps n) = n
 
-type RegularSetId = RegularSetId of Guid
+type RegularSetId = RegularSetId of int
 
 module RegularSetId =
-    let toGuid (RegularSetId id) = id
+    let toInt (RegularSetId id) = id
     
 type RegularSet =
     { RegularSetId : RegularSetId 
@@ -50,8 +50,8 @@ type RegularSet =
     
 module RegularSet =
     let create =
-        fun exerciseId weight reps ->
-            { RegularSetId = RegularSetId <| Guid.NewGuid()
+        fun exerciseId setId weight reps ->
+            { RegularSetId = setId
               Weight = weight
               Reps = reps
               Exercise = exerciseId }
