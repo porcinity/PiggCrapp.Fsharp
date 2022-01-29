@@ -8,6 +8,7 @@
     <ItemGroup>
         <Compile Include="ExercisesHandlers.fs" />
         <Compile Include="WorkoutsHandlers.fs" />
+        <Compile Include="SetsHandlers.fs" />
         <Compile Include="UsersHandlers.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
