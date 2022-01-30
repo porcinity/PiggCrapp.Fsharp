@@ -20,7 +20,7 @@ let (<!>) = Result.map
 let (<*>) = apply
 
 type getUserDto =
-    { Id : Guid
+    { Id : string
       Name : string
       Age : int
       Weight : double
@@ -28,7 +28,7 @@ type getUserDto =
 
 module getUserDto =
     let fromDomain (user: User) =
-        { Id = UserId.toGuid user.UserId
+        { Id = ShortGuid.fromGuid (UserId.toGuid user.UserId)
           Name = UserName.toString user.Name
           Age = UserAge.toInt user.Age
           Weight = UserWeight.toFloat user.Weight
