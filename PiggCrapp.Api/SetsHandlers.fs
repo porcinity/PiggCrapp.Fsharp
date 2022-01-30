@@ -32,7 +32,8 @@ let getSetsHandler exerciseId : HttpHandler =
             |> ExerciseId
             |> findSetsAsync
             |> Task.map (List.map getSetDto.fromDomain)
-        return! json sets next ctx
+        let ordered = List.sortBy (fun x -> x.Id) sets
+        return! json ordered next ctx
     }
 
 let getSetHandler (exerciseId, setId) : HttpHandler =
