@@ -57,8 +57,9 @@ let getUsersHandler : HttpHandler =
         }
 
 let getUserHandler id next ctx = task {
+    let guid = ShortGuid.toGuid id
     let! user =
-        id
+        guid
         |> findUserAsync
         |> Task.map List.tryHead
     match user with

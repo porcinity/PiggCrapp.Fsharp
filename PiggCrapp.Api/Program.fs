@@ -15,7 +15,7 @@ let webApp =
         GET >=>
             choose [
                 route "/users" >=> getUsersHandler
-                routef "/users/%O" getUserHandler
+                routef "/users/%s" getUserHandler
                 routef "/users/%O/workouts" getWorkoutsHandler
                 routef "/workouts/%O" getWorkoutHandler
                 routef "/workouts/%O/exercises" getExercisesHandler
