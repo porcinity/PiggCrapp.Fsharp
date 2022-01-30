@@ -60,7 +60,7 @@ let updateSetHandler (exerciseId, setId) : HttpHandler =
     fun next ctx -> task {
         let! dto = ctx.BindJsonAsync<getSetDto> ()
         let result = getSetDto.toDomain exerciseId dto
-        let! set = findSetAsync (ExerciseId exerciseId) (RegularSetId setId) |> Task.map List.tryHead
+        let! set = findSetAsync (ExerciseId exerciseId) (RegularSetId setId)
         match result, set with
         | Ok updatedSet, Some originalSet ->
             let set = RegularSet.update originalSet updatedSet
