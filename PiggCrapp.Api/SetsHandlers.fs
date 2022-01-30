@@ -82,8 +82,9 @@ let updateSetHandler (exerciseId, setId) : HttpHandler =
 
 let deleteSetHandler (exerciseId, setId) : HttpHandler =
     fun next ctx -> task {
-        match! deleteSetAsync (ExerciseId exerciseId) (RegularSetId setId) with
-        | 1 ->
-            return! Successful.NO_CONTENT next ctx
-        | _ -> return! RequestErrors.NOT_FOUND {||} next ctx
+        let! result = deleteSetAsync (ExerciseId exerciseId) (RegularSetId setId)
+        return!
+            (match result with
+            | 1 -> Successful.NO_CONTENT
+            | _ -> RequestErrors.NOT_FOUND "Not found.") next ctx
     }
