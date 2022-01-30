@@ -1,5 +1,6 @@
 module PiggCrapp.UserStorage
 
+open FSharpPlus
 open Npgsql.FSharp
 open PiggCrapp.Domain.Ids
 open PiggCrapp.Domain.Users
@@ -33,6 +34,7 @@ let findUserAsync userId =
             Weight = read.double "user_weight" * 1.0<lbs> |> UserWeight
             CreatedDate = read.dateTime "created_date"
         })
+    |> Task.map List.tryHead
     
 let insertUserAsync user =
     connStr
