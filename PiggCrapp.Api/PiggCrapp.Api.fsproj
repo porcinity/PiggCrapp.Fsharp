@@ -15,7 +15,6 @@
 
     <ItemGroup>
       <PackageReference Include="FSharpPlus" Version="1.2.2" />
-      <PackageReference Include="FSharpPlus.AspNetCore" Version="0.0.6" />
       <PackageReference Include="FsToolkit.ErrorHandling" Version="2.13.0" />
       <PackageReference Include="Giraffe" Version="6.0.0-alpha-2" />
     </ItemGroup>
