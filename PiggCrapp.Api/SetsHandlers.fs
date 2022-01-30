@@ -55,7 +55,7 @@ let postSetHandler exerciseId : HttpHandler =
         let! dto = ctx.BindJsonAsync<getSetDto> ()
         match getSetDto.toDomain exerciseId dto with
         | Ok set ->
-            let! result = insertSetAsync set
+            Task.ignore (insertSetAsync set) |> ignore
             return! json {| id = RegularSetId.toInt set.RegularSetId |} next ctx
         | Error e ->
             return! RequestErrors.UNPROCESSABLE_ENTITY e next ctx
