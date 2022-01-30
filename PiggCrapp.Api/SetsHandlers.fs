@@ -38,14 +38,10 @@ let getSetsHandler exerciseId : HttpHandler =
 
 let getSetHandler (exerciseId, setId) : HttpHandler =
     fun next ctx -> task {
-        let! set =
-            setId
-            |> RegularSetId
-            |> findSetAsync (ExerciseId exerciseId)
-            |> Task.map List.tryHead
-            |> Task.map (Option.map getSetDto.fromDomain)
-        match set with
-        | Some set -> return! json set next ctx
+        match! findSetAsync (ExerciseId exerciseId) (RegularSetId setId) with
+        | Some set ->
+            let dto = getSetDto.fromDomain set
+            return! json dto next ctx
         | None -> return! RequestErrors.NOT_FOUND {||} next ctx
     }
 
