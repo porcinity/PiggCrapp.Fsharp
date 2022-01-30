@@ -29,12 +29,11 @@ module getSetDto =
 let getSetsHandler exerciseId : HttpHandler =
     fun next ctx -> task {
         let! sets =
-            exerciseId
-            |> ExerciseId
+            ExerciseId exerciseId
             |> findSetsAsync
             |> Task.map (List.map getSetDto.fromDomain)
-        let ordered = List.sortBy (fun x -> x.Id) sets
-        return! json ordered next ctx
+            |> Task.map List.sort
+        return! json sets next ctx
     }
 
 let getSetHandler (exerciseId, setId) : HttpHandler =
