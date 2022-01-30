@@ -64,21 +64,15 @@ let postSetHandler exerciseId : HttpHandler =
 let updateSetHandler (exerciseId, setId) : HttpHandler =
     fun next ctx -> task {
         let! dto = ctx.BindJsonAsync<getSetDto> ()
-        let id = Ok (RegularSetId dto.Id)
-        let weight = Weight.fromDbl dto.Weight
-        let reps = Reps.fromInt dto.Reps
+        let result = getSetDto.toDomain exerciseId dto
         let! set = findSetAsync (ExerciseId exerciseId) (RegularSetId setId) |> Task.map List.tryHead
-        match set with
-        | Some set ->
-            let updatedSet = RegularSet.update <!> Ok set <*> id <*> weight <*> reps
-            match updatedSet with
-            | Ok set ->
-                let! result = updateSetAsync set
-                return! json (getSetDto.fromDomain set) next ctx
-            | Error e ->
-                return! RequestErrors.UNPROCESSABLE_ENTITY e next ctx
-        | None ->
-            return! RequestErrors.NOT_FOUND {||} next ctx
+        match result, set with
+        | Ok updatedSet, Some originalSet ->
+            let set = RegularSet.update originalSet updatedSet
+            let! result = updateSetAsync set
+            return! json (getSetDto.fromDomain originalSet) next ctx
+        | Error e, _ -> return! RequestErrors.UNPROCESSABLE_ENTITY e next ctx
+        | _, None -> return! RequestErrors.NOT_FOUND {||} next ctx
     }
 
 let deleteSetHandler (exerciseId, setId) : HttpHandler =
