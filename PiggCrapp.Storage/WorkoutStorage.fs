@@ -1,4 +1,4 @@
-module PiggCrapp.Storage
+module PiggCrapp.Storage.Workouts
 
 open Npgsql.FSharp
 open PiggCrapp.Domain.Ids

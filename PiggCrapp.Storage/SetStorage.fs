@@ -1,10 +1,9 @@
-module PiggCrapp.Domain.SetStorage
+module PiggCrapp.Storage.Sets
 
 open Npgsql.FSharp
 open PiggCrapp.Domain.Ids
 open PiggCrapp.Domain.Sets
 open FSharpPlus
-
 
 let connStr = "Host=localhost;Database=PiggCrapp;Username=pigg"
 

@@ -1,4 +1,4 @@
-module PiggCrapp.ExerciseStorage
+module PiggCrapp.Storage.Exercises
 
 open CommonExtensionsAndTypesForNpgsqlFSharp
 open Npgsql.FSharp

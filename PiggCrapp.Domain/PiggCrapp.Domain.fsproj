@@ -14,15 +14,6 @@
         <Compile Include="Exercises.fs" />
         <Compile Include="Workouts.fs" />
         <Compile Include="Users.fs" />
-        <Compile Include="WorkoutStorage.fs" />
-        <Compile Include="ExerciseStorage.fs" />
-        <Compile Include="SetStorage.fs" />
-        <Compile Include="UserStorage.fs" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="FSharpPlus" Version="1.2.2" />
-      <PackageReference Include="Npgsql.FSharp" Version="4.1.0" />
     </ItemGroup>
 
 </Project>

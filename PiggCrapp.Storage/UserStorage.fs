@@ -1,4 +1,4 @@
-module PiggCrapp.UserStorage
+module PiggCrapp.Storage.Users
 
 open FSharpPlus
 open Npgsql.FSharp

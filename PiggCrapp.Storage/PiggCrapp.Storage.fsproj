@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="UserStorage.fs" />
+        <Compile Include="WorkoutStorage.fs" />
+        <Compile Include="ExerciseStorage.fs" />
+        <Compile Include="SetStorage.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FSharpPlus" Version="1.2.2" />
+      <PackageReference Include="Npgsql.FSharp" Version="4.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\PiggCrapp.Domain\PiggCrapp.Domain.fsproj" />
+    </ItemGroup>
+
+</Project>

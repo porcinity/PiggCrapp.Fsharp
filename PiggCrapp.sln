@@ -4,6 +4,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PiggCrapp.Domain", "PiggCra
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PiggCrapp.Api", "PiggCrapp.Api\PiggCrapp.Api.fsproj", "{390D3FD9-EF71-4CFC-99FE-0DD673C4E412}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PiggCrapp.Storage", "PiggCrapp.Storage\PiggCrapp.Storage.fsproj", "{80668C44-A9C3-4ED2-B3C8-DA8F417F7002}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{390D3FD9-EF71-4CFC-99FE-0DD673C4E412}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{390D3FD9-EF71-4CFC-99FE-0DD673C4E412}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{390D3FD9-EF71-4CFC-99FE-0DD673C4E412}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80668C44-A9C3-4ED2-B3C8-DA8F417F7002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80668C44-A9C3-4ED2-B3C8-DA8F417F7002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80668C44-A9C3-4ED2-B3C8-DA8F417F7002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80668C44-A9C3-4ED2-B3C8-DA8F417F7002}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
