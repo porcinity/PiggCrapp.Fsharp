@@ -58,17 +58,12 @@ let getUsersHandler : HttpHandler =
 
 let getUserHandler id next ctx = task {
     let guid = ShortGuid.toGuid id
-    let! user =
-        guid
-        |> findUserAsync
-        |> Task.map List.tryHead
-    match user with
+    match! findUserAsync guid with
     | Some u ->
         let dto = getUserDto.fromDomain u
         return! json dto next ctx
     | None ->
-        ctx.SetStatusCode 404
-        return! json {| message = "No user found with that Id" |} next ctx
+        return! RequestErrors.NOT_FOUND "" next ctx
 }
 
 let postUserHandler : HttpHandler =
