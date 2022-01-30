@@ -81,26 +81,15 @@ let postUserHandler : HttpHandler =
 let updateUserHandler userId : HttpHandler =
     fun next ctx -> task {
     let! dto = ctx.BindJsonAsync<PostUserDto.T> ()
-    let! user =
-        userId
-        |> findUserAsync
-        |> Task.map List.tryHead
-    match user with
-    | Some user ->
-        let name = UserName.fromString dto.Name
-        let age = UserAge.fromInt dto.Age
-        let weight = UserWeight.create <| dto.Weight * 1.0<lbs>
-        let result = User.update user <!> name <*> age <*> weight
-        match result with
-        | Ok resultValue ->
-            updateUserAsnc resultValue |> Async.AwaitTask |> Async.RunSynchronously |> ignore
-            ctx.SetStatusCode 201
-            return! json {||} next ctx
-        | Error e ->
-            return! RequestErrors.UNPROCESSABLE_ENTITY e next ctx
-    | None ->
-        ctx.SetStatusCode 404
-        return! json {| |} next ctx
+    let updateUser = PostUserDto.toDomain dto
+    let! user = userId |> findUserAsync
+    match updateUser, user with
+    | Ok update, Some user ->
+        let updateResult = User.update user update
+        updateUserAsnc updateResult |> Async.AwaitTask |> Async.RunSynchronously |> ignore
+        return! Successful.CREATED {||} next ctx
+    | Error e, _ -> return! RequestErrors.UNPROCESSABLE_ENTITY e next ctx
+    | _, None -> return! RequestErrors.NOT_FOUND "" next ctx
 }
 
 let deleteUserHandler userId : HttpHandler =
