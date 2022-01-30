@@ -55,6 +55,13 @@ module RegularSet =
               Weight = weight
               Reps = reps
               Exercise = exerciseId }
+
+    let update =
+        fun set id weight reps ->
+            { set with
+                RegularSetId = id
+                Weight = weight
+                Reps = reps }
     
 type RpSetId = RpSetId of Guid
     
