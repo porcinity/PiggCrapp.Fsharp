@@ -1,12 +1,12 @@
 module PiggCrapp.Api.UsersHandlers
 
-open System
 open Microsoft.AspNetCore.Http
 open Giraffe
 open PiggCrapp.Domain.Users
 open PiggCrapp.Domain.Ids
 open PiggCrapp.Domain.Measurements
 open PiggCrapp.UserStorage
+open FsToolkit.ErrorHandling
 open FSharpPlus
 
 let apply fResult xResult =
@@ -40,11 +40,12 @@ module PostUserDto =
           Age : int
           Weight : float }
         
-    let toDomain dto =
-        let name = UserName.fromString dto.Name
-        let age = UserAge.fromInt dto.Age
-        let weight = dto.Weight * 1.0<lbs> |> UserWeight.create
-        User.create <!> name <*> age <*> weight
+    let toDomain dto = validation {
+        let! name = UserName.fromString dto.Name
+        and! age = UserAge.fromInt dto.Age
+        and! weight = dto.Weight * 1.0<lbs> |> UserWeight.create
+        return User.create name age weight
+    }
 
 let getUsersHandler : HttpHandler =
     fun next ctx ->
