@@ -21,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="FSharpPlus" Version="1.2.2" />
       <PackageReference Include="Npgsql.FSharp" Version="4.1.0" />
     </ItemGroup>
 
