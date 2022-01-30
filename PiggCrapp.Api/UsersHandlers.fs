@@ -45,15 +45,16 @@ let getUsersHandler : HttpHandler =
         return! json dtos next ctx
     }
 
-let getUserHandler id next ctx = task {
-    let guid = ShortGuid.toGuid id
-    match! findUserAsync guid with
-    | Some u ->
-        let dto = getUserDto.fromDomain u
-        return! json dto next ctx
-    | None ->
-        return! RequestErrors.NOT_FOUND "" next ctx
-}
+let getUserHandler id : HttpHandler =
+    fun next ctx -> task {
+        let guid = ShortGuid.toGuid id
+        match! findUserAsync guid with
+        | Some u ->
+            let dto = getUserDto.fromDomain u
+            return! json dto next ctx
+        | None ->
+            return! RequestErrors.NOT_FOUND "" next ctx
+    }
 
 let postUserHandler : HttpHandler =
     fun next ctx -> task {
