@@ -4,7 +4,7 @@ open Giraffe
 open PiggCrapp.Domain.Users
 open PiggCrapp.Domain.Ids
 open PiggCrapp.Domain.Measurements
-open PiggCrapp.UserStorage
+open PiggCrapp.Storage.Users
 open FsToolkit.ErrorHandling
 open FSharpPlus
 

@@ -6,7 +6,7 @@ open Microsoft.AspNetCore.Http
 open Giraffe
 open PiggCrapp.Domain.Ids
 open PiggCrapp.Domain.Workouts
-open PiggCrapp.Storage
+open PiggCrapp.Storage.Workouts
 
 type getWorkoutDto =
     { WorkoutId : Guid

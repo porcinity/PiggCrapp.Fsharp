@@ -4,7 +4,7 @@ open System
 open Giraffe
 open PiggCrapp.Domain.Exercises
 open PiggCrapp.Domain.Ids
-open PiggCrapp.ExerciseStorage
+open PiggCrapp.Storage.Exercises
 open FSharpPlus
 
 type getExerciseDto =

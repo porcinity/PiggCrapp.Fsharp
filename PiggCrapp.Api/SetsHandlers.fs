@@ -3,7 +3,7 @@ module PiggCrapp.Api.SetsHandlers
 open Giraffe
 open PiggCrapp.Domain.Ids
 open PiggCrapp.Domain.Sets
-open PiggCrapp.Domain.SetStorage
+open PiggCrapp.Storage.Sets
 open FSharpPlus
 open FsToolkit.ErrorHandling
 
