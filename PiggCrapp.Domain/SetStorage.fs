@@ -3,6 +3,7 @@ module PiggCrapp.Domain.SetStorage
 open Npgsql.FSharp
 open PiggCrapp.Domain.Ids
 open PiggCrapp.Domain.Sets
+open FSharpPlus
 
 
 let connStr = "Host=localhost;Database=PiggCrapp;Username=pigg"
@@ -37,6 +38,7 @@ let findSetAsync exerciseId setId =
            Reps = read.int "set_reps" |> Reps
            Exercise = read.uuid "exercise_id" |> ExerciseId
         })
+    |> Task.map List.tryHead
     
 let insertSetAsync set =
     connStr
