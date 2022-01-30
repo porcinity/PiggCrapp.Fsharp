@@ -1,11 +1,11 @@
 module PiggCrapp.Api.SetsHandlers
 
-open System
 open Giraffe
 open PiggCrapp.Domain.Ids
 open PiggCrapp.Domain.Sets
 open PiggCrapp.Domain.SetStorage
 open FSharpPlus
+open FsToolkit.ErrorHandling
 
 type getSetDto =
     { Id : int
