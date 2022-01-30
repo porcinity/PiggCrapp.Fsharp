@@ -73,8 +73,7 @@ let postUserHandler : HttpHandler =
         | Ok user ->
             insertUserAsync user |> Async.AwaitTask |> Async.RunSynchronously |> ignore
             let response = getUserDto.fromDomain user
-            ctx.SetStatusCode 201
-            return! json response next ctx
+            return! Successful.CREATED response next ctx
         | Error e ->
             return! RequestErrors.UNPROCESSABLE_ENTITY {| errors = e |} next ctx
     }
