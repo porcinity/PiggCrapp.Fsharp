@@ -18,12 +18,13 @@ module getSetDto =
           Reps = Reps.toInt set.Reps
           Weight = Weight.toDouble set.Weight }
 
-    let toDomain exerciseId dto =
-        let exerciseId = Ok (ExerciseId exerciseId)
-        let regularSetId = Ok (RegularSetId dto.Id)
-        let weight = Weight.fromDbl dto.Weight
-        let reps = Reps.fromInt dto.Reps
-        RegularSet.create <!> exerciseId <*> regularSetId <*> weight <*> reps
+    let toDomain exerciseId dto = validation {
+        let! exerciseId = Ok (ExerciseId exerciseId)
+        and! regularSetId = Ok (RegularSetId dto.Id)
+        and! weight = Weight.fromDbl dto.Weight
+        and! reps = Reps.fromInt dto.Reps
+        return RegularSet.create exerciseId regularSetId weight reps
+    }
 
 let getSetsHandler exerciseId : HttpHandler =
     fun next ctx -> task {
