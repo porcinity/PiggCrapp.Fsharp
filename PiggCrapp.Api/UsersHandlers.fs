@@ -94,10 +94,9 @@ let updateUserHandler userId : HttpHandler =
 
 let deleteUserHandler userId : HttpHandler =
     fun next ctx -> task {
-        match! deleteUserAsync <| UserId userId with
+        match! deleteUserAsync (UserId userId) with
         | 1 ->
-            ctx.SetStatusCode 204
-            return! json {||} next ctx
+            return! Successful.NO_CONTENT next ctx
         | _ ->
-            return! RequestErrors.NOT_FOUND {| message = "no user with that Id" |} next ctx
+            return! RequestErrors.NOT_FOUND "" next ctx
     }
