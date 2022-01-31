@@ -1,14 +1,21 @@
 module PiggCrapp.Api.Program
 
+open System
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
+open Microsoft.Extensions.Logging
 open PiggCrapp.Api.UsersHandlers
 open PiggCrapp.Api.WorkoutsHandlers
 open PiggCrapp.Api.ExercisesHandlers
 open PiggCrapp.Api.SetsHandlers
 open Giraffe
+
+let errorHandler (ex : Exception) (logger : ILogger) =
+    logger.LogError(EventId(), ex, "An unhandled exception has occurred while executing the request.")
+    clearResponse
+    >=> ServerErrors.INTERNAL_ERROR ex.Message
 
 let webApp =
     choose [
@@ -48,7 +55,8 @@ let webApp =
 
 let configureApp (app : IApplicationBuilder) =
     // Add Giraffe to the ASP.NET Core pipeline
-    app.UseGiraffe webApp
+    app.UseGiraffeErrorHandler(errorHandler)
+       .UseGiraffe webApp
 
 let configureServices (services : IServiceCollection) =
     // Add Giraffe dependencies
