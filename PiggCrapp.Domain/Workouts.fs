@@ -24,7 +24,7 @@ module WorkoutVariation =
             | LowerB -> "Lower B"
             | LowerC -> "Lower C"
             | InvalidVariation -> "Invalid variation. Please update."
-            
+
     let fromString =
         fun str ->
             match str with
@@ -37,15 +37,15 @@ module WorkoutVariation =
             | _ -> InvalidVariation
 
 type Workout =
-    { WorkoutId : WorkoutId
-      Date : DateTime
-      Variation : WorkoutVariation
-      Exercises : Exercise list
-      Owner : UserId }
-    
+    { WorkoutId: WorkoutId
+      Date: DateTime
+      Variation: WorkoutVariation
+      Exercises: Exercise list
+      Owner: UserId }
+
 module WorkoutId =
     let toGuid (WorkoutId guid) = guid
-    
+
 module Workout =
     let create variation userId =
         { WorkoutId = WorkoutId <| Guid.NewGuid()
@@ -53,18 +53,18 @@ module Workout =
           Variation = variation
           Exercises = []
           Owner = userId }
-    
-    let changeVariation workout variation =
-        { workout with Variation = variation }
-        
-    let changeDate workout date =
-        { workout with Date = date }
+
+    let changeVariation workout variation = { workout with Variation = variation }
+
+    let changeDate workout date = { workout with Date = date }
 
     let addExercise workout exercise =
-        { workout with Exercises = workout.Exercises @ [exercise] }
-    
+        { workout with
+              Exercises = workout.Exercises @ [ exercise ] }
+
     let removeExercise workout exercise =
         let newList =
             workout.Exercises
             |> List.filter (fun e -> e <> exercise)
+
         { workout with Exercises = newList }
