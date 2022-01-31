@@ -1,5 +1,6 @@
 module PiggCrapp.Storage.Workouts
 
+open FSharpPlus
 open Npgsql.FSharp
 open PiggCrapp.Domain.Ids
 open PiggCrapp.Domain.Workouts
@@ -35,6 +36,7 @@ let findWorkoutAsync workoutId =
            Exercises = []
            Owner = read.uuid "user_id" |> UserId
         })
+    |> Task.map List.tryHead
 
 let insertWorkoutAsync workout =
     connStr
