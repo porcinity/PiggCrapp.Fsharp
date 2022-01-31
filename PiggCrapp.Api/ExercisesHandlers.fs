@@ -6,6 +6,7 @@ open PiggCrapp.Domain.Exercises
 open PiggCrapp.Domain.Ids
 open PiggCrapp.Storage.Exercises
 open FSharpPlus
+open FsToolkit.ErrorHandling
 
 type getExerciseDto =
     { Id : Guid
@@ -21,9 +22,11 @@ type postExerciseDto =
 
 module postExerciseDto =
     let toDomain dto workoutId =
-        let name = ExerciseName.create dto.Name
-        let workoutId' = Ok (WorkoutId workoutId)
-        Exercise.create <!> name <*> workoutId'
+        validation {
+            let! name = ExerciseName.create dto.Name
+            let! workoutIdResult = Ok (WorkoutId workoutId)
+            return Exercise.create name workoutIdResult
+        }
 
 let getExercisesHandler workoutId : HttpHandler =
     fun next ctx -> task {
