@@ -22,7 +22,7 @@ module getUserDto =
           Age = UserAge.toInt user.Age
           Weight = UserWeight.toFloat user.Weight
           JoinDate = user.CreatedDate.ToString("yyyy-MM-dd") }
-        
+
 module PostUserDto =
     type T =
         { Name : string
