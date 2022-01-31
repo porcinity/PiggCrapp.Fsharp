@@ -36,12 +36,7 @@ let getExercisesHandler workoutId : HttpHandler =
 
 let getExerciseHandler exerciseId : HttpHandler =
     fun next ctx -> task {
-        let! query =
-            exerciseId
-            |> ExerciseId
-            |> findExerciseAsync
-            |> Task.map List.tryHead
-        match query with
+        match! findExerciseAsync (ExerciseId exerciseId) with
         | Some exercise ->
             let dto = getExerciseDto.fromDomain exercise
             return! json dto next ctx
