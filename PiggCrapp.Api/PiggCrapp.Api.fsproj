@@ -11,6 +11,7 @@
         <Compile Include="SetsHandlers.fs" />
         <Compile Include="UsersHandlers.fs" />
         <Compile Include="Program.fs" />
+        <None Include="ComputationExpressionNotes.fsx" />
     </ItemGroup>
 
     <ItemGroup>
