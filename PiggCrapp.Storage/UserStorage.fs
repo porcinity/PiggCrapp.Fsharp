@@ -88,7 +88,7 @@ let insertUserAsync user =
     ]
     |> Sql.executeNonQueryAsync
 
-let updateUserAsnc user =
+let updateUserAsync (user:User) =
     connStr
     |> Sql.connect
     |> Sql.query "update users set
