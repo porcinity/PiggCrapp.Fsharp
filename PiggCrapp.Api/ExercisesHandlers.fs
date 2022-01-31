@@ -22,12 +22,12 @@ type postExerciseDto =
 module postExerciseDto =
     let toDomain dto workoutId =
         let name = ExerciseName.create dto.Name
-        let workoutId' = Ok <| WorkoutId workoutId
+        let workoutId' = Ok (WorkoutId workoutId)
         Exercise.create <!> name <*> workoutId'
 
 let getExercisesHandler workoutId : HttpHandler =
     fun next ctx -> task {
-        let! exercises = findExercisesAsync <| WorkoutId workoutId
+        let! exercises = findExercisesAsync (WorkoutId workoutId)
         let dtos =
             exercises
             |> List.map getExerciseDto.fromDomain
@@ -58,16 +58,11 @@ let postExerciseHandler workoutId : HttpHandler =
 
 let updateExerciseHandler exerciseId : HttpHandler =
     fun next ctx -> task {
-        let! query =
-            exerciseId
-            |> ExerciseId
-            |> findExerciseAsync
-            |> Task.map List.tryHead
-        match query with
+        match! findExerciseAsync (ExerciseId exerciseId) with
         | Some exercise ->
             let! dto = ctx.BindJsonAsync<postExerciseDto> ()
             let updated = { exercise with Name = ExerciseName dto.Name }
-            let! result = updateExerciseAsync updated
+            do! updateExerciseAsync updated |> Task.ignore
             let response = getExerciseDto.fromDomain updated
             return! json response next ctx
         | None ->
@@ -76,7 +71,7 @@ let updateExerciseHandler exerciseId : HttpHandler =
 
 let deleteExerciseHandler exerciseId : HttpHandler =
     fun next ctx -> task {
-        match! deleteExerciseAsync <| ExerciseId exerciseId with
+        match! deleteExerciseAsync (ExerciseId exerciseId) with
         | 1 -> return! Successful.NO_CONTENT next ctx
         | _ -> return! RequestErrors.NOT_FOUND {||} next ctx
     }
