@@ -53,7 +53,7 @@ let postWorkoutHandler userId next (ctx:HttpContext) = task {
     let! dto = ctx.BindJsonAsync<postWorkoutDto> ()
     let variation = WorkoutVariation.fromString dto.Variation
     let workout = Workout.create variation (UserId userId)
-    let! res = insertWorkoutAsync workout
+    do! insertWorkoutAsync workout |> Task.ignore
     let guid = WorkoutId.toGuid workout.WorkoutId
     return! redirectTo false $"https://localhost:7162/workouts/{guid}" next ctx
 }
