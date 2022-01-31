@@ -16,15 +16,3 @@ type UserId = UserId of Guid
 
 module UserId =
     let toGuid (UserId guid) = guid
-    
-//type Id =
-//    | ExerciseId of Guid
-//    | WorkoutId of Guid
-//    | UserId of Guid
-    
-//module Id =
-//    let unwrap id =
-//        match id with
-//        | ExerciseId id -> id
-//        | WorkoutId id -> id
-//        | UserId id -> id
