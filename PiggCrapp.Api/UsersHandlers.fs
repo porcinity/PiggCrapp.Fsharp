@@ -28,7 +28,7 @@ module PostUserDto =
         { Name : string
           Age : int
           Weight : float }
-        
+
     let toDomain dto = validation {
         let! name = UserName.fromString dto.Name
         and! age = UserAge.fromInt dto.Age
