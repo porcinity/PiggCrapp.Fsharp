@@ -1,12 +1,32 @@
 module PiggCrapp.Storage.Users
 
+open System
 open FSharpPlus
+open FsToolkit.ErrorHandling
 open Npgsql.FSharp
 open PiggCrapp.Domain.Ids
 open PiggCrapp.Domain.Users
 open PiggCrapp.Domain.Measurements
 
 let connStr = "Host=localhost;Database=PiggCrapp;Username=pigg"
+
+type dbDto =
+    { Id : Guid
+      Name : string
+      Age : int
+      Weight : double
+      Created : DateTime }
+
+let toDomain dto = validation {
+        let! name = UserName.fromString dto.Name
+        and! age = UserAge.fromInt dto.Age
+        and! weight = dto.Weight * 1.0<lbs> |> UserWeight.create
+        return { UserId = UserId dto.Id
+                 Name = name
+                 Age = age
+                 Weight = weight
+                 CreatedDate = dto.Created }
+    }
 
 let findUsersAsync () =
     connStr
@@ -33,6 +53,24 @@ let findUserAsync userId =
             Age = read.int "user_age" |> UserAge
             Weight = read.double "user_weight" * 1.0<lbs> |> UserWeight
             CreatedDate = read.dateTime "created_date"
+        })
+    |> Task.map List.tryHead
+
+let findUserAsyncResult userId =
+    connStr
+    |> Sql.connect
+    |> Sql.query "select * from users where user_id = @id"
+    |> Sql.parameters [ "@id", Sql.uuid userId ]
+    |> Sql.executeAsync (fun read ->
+        result {
+                let dto =
+                    { Id = read.uuid "user_id"
+                      Name = read.text "user_name"
+                      Age = read.int "user_age"
+                      Weight = read.double "user_weight"
+                      Created = read.dateTime "created_date" }
+                let! resultUser = toDomain dto
+                return resultUser
         })
     |> Task.map List.tryHead
     
