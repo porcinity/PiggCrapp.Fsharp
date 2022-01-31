@@ -31,10 +31,10 @@ module postExerciseDto =
 let getExercisesHandler workoutId : HttpHandler =
     fun next ctx -> task {
         let! exercises = findExercisesAsync (WorkoutId workoutId)
-        let dtos =
+        let exerciseDtoList =
             exercises
             |> List.map getExerciseDto.fromDomain
-        return! json dtos next ctx
+        return! json exerciseDtoList next ctx
     }
 
 let getExerciseHandler exerciseId : HttpHandler =
