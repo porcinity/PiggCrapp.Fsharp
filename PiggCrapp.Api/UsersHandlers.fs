@@ -68,6 +68,7 @@ let postUserHandler: HttpHandler =
     fun next ctx ->
         task {
             let! dto = ctx.BindJsonAsync<PostUserDto.T>()
+
             match PostUserDto.toDomain dto with
             | Ok user ->
                 insertUserAsync user
