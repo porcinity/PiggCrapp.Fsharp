@@ -37,11 +37,7 @@ let getWorkoutsHandler userId next ctx = task {
 }
 
 let getWorkoutHandler workoutId next ctx = task {
-    let! query =
-        workoutId
-        |> findWorkoutAsync
-        |> Task.map List.tryHead
-    match query with
+    match! findWorkoutAsync workoutId with
     | Some workout ->
         let dto = getWorkoutDto.fromDomain workout
         return! json dto next ctx
