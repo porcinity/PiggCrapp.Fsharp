@@ -11,6 +11,7 @@ type WorkoutVariation =
     | LowerA
     | LowerB
     | LowerC
+    | InvalidVariation
 
 module WorkoutVariation =
     let toString =
@@ -22,8 +23,8 @@ module WorkoutVariation =
             | LowerA -> "Lower A"
             | LowerB -> "Lower B"
             | LowerC -> "Lower C"
+            | InvalidVariation -> "Invalid variation. Please update."
             
-    // Come back to this. Make function return a Result? Requires large refactoring of ExerciseStorage.
     let fromString =
         fun str ->
             match str with
@@ -33,6 +34,7 @@ module WorkoutVariation =
             | "Lower A" -> LowerA
             | "Lower B" -> LowerB
             | "Lower C" -> LowerC
+            | _ -> InvalidVariation
 
 type Workout =
     { WorkoutId : WorkoutId
