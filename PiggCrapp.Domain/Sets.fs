@@ -98,7 +98,27 @@ type DropSet =
       DropSets: RegularSet list
       Exercise: ExerciseId }
 
+type BereavedSetId = BereavedSetId of Guid
+
+type BereavedMaker =
+    { BereavedSetId: BereavedSetId
+      Weight: Weight
+      TargetReps: Reps
+      ActualReps: Reps
+      CompletionTime: float }
+
+type Time = Time of float<sec>
+
+type ExtremeStretchId = ExtremeStretchId of Guid
+
+type ExtremeStretch =
+    { ExtrmeStretchId: ExtremeStretchId
+      Weight: Weight
+      Time: Time }
+
 type Set =
     | Regular of RegularSet
     | RestPause of RestPauseSet
     | DropSet of DropSet
+    | BereavedMaker of BereavedMaker
+    | ExtremeStretch of ExtremeStretch
