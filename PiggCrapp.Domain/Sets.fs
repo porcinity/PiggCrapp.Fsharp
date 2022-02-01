@@ -91,13 +91,6 @@ module RestPauseSet =
 
         { rpSet with RestPauseSets = setMinus }
 
-type DropSetId = DropSetId of Guid
-
-type DropSet =
-    { DropSetId: DropSetId
-      DropSets: RegularSet list
-      Exercise: ExerciseId }
-
 type BereavedSetId = BereavedSetId of Guid
 
 type BereavedMaker =
