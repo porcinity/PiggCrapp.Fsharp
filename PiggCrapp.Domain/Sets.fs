@@ -2,8 +2,9 @@
 
 open System
 open PiggCrapp.Domain.Ids
+open PiggCrapp.Domain.Measurements
 
-type Weight = Weight of double
+type Weight = Weight of double<lbs>
 
 module Weight =
     let (|TooHeavy|TooLight|GoodWeight|) (n: double) =
@@ -16,9 +17,9 @@ module Weight =
         match n with
         | TooHeavy -> Error [ "Too heavy." ]
         | TooLight -> Error [ "Too light." ]
-        | GoodWeight -> Weight n |> Ok
+        | GoodWeight -> Weight (n * 1.0<lbs>) |> Ok
 
-    let toDouble (Weight n) = n
+    let toDouble (Weight n) : double = n / 1.0<lbs>
 
 type Reps = Reps of int
 
