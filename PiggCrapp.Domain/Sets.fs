@@ -112,7 +112,7 @@ type Time = Time of float<sec>
 type ExtremeStretchId = ExtremeStretchId of Guid
 
 type ExtremeStretch =
-    { ExtrmeStretchId: ExtremeStretchId
+    { ExtremeStretchId: ExtremeStretchId
       Weight: Weight
       Time: Time }
 
