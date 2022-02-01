@@ -119,6 +119,5 @@ type ExtremeStretch =
 type Set =
     | Regular of RegularSet
     | RestPause of RestPauseSet
-    | DropSet of DropSet
     | BereavedMaker of BereavedMaker
     | ExtremeStretch of ExtremeStretch
