@@ -66,6 +66,11 @@ module RegularSet =
 
 type RpSetId = RpSetId of Guid
 
+type RestPauseRange =
+    | Base
+    | Medium
+    | High
+
 type RestPauseSet =
     { RpSetId: RpSetId
       Weight: Weight
