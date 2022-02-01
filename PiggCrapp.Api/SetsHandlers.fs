@@ -7,9 +7,10 @@ open PiggCrapp.Storage.Sets
 open FSharpPlus
 open FsToolkit.ErrorHandling
 
-type getSetDto = { Id: int; Reps: int; Weight: double }
+[<CLIMutable>]
+type GetSetDto = { Id: int; Reps: int; Weight: double }
 
-module getSetDto =
+module GetSetDto =
     let fromDomain (set: RegularSet) =
         { Id = RegularSetId.toInt set.RegularSetId
           Reps = Reps.toInt set.Reps
@@ -24,13 +25,23 @@ module getSetDto =
             return RegularSet.create exerciseId regularSetId weight reps
         }
 
+[<CLIMutable>]
+type RestPauseDto =
+    { Id: int
+      Range: string
+      Weight: double }
+
+type SetDto =
+    | GetSetDto of GetSetDto
+    | RestPauseDto of RestPauseDto
+
 let getSetsHandler exerciseId : HttpHandler =
     fun next ctx ->
         task {
             let! sets =
                 ExerciseId exerciseId
                 |> findSetsAsync
-                |> Task.map (List.map getSetDto.fromDomain)
+                |> Task.map (List.map GetSetDto.fromDomain)
                 |> Task.map List.sort
 
             return! json sets next ctx
@@ -41,35 +52,50 @@ let getSetHandler (exerciseId, setId) : HttpHandler =
         task {
             match! findSetAsync (ExerciseId exerciseId) (RegularSetId setId) with
             | Some set ->
-                let dto = getSetDto.fromDomain set
+                let dto = GetSetDto.fromDomain set
                 return! json dto next ctx
             | None -> return! RequestErrors.NOT_FOUND {|  |} next ctx
         }
 
-let postSetHandler exerciseId : HttpHandler =
+let postGetSetHandler exerciseId dto =
     fun next ctx ->
         task {
-            let! dto = ctx.BindJsonAsync<getSetDto>()
-
-            match getSetDto.toDomain exerciseId dto with
+            match GetSetDto.toDomain exerciseId dto with
             | Ok set ->
                 Task.ignore (insertSetAsync set) |> ignore
                 return! json {| id = RegularSetId.toInt set.RegularSetId |} next ctx
             | Error e -> return! RequestErrors.UNPROCESSABLE_ENTITY e next ctx
         }
 
+let postRpSetHandler exerciseId dto =
+    fun next ctx ->
+        task {
+            return! text "Not yet implemented" next ctx
+        }
+
+let postSetHandler exerciseId : HttpHandler =
+    fun next ctx ->
+        task {
+            let! dto = ctx.BindJsonAsync<SetDto>()
+            match dto with
+            | GetSetDto gs ->
+                return! postGetSetHandler exerciseId gs next ctx
+            | RestPauseDto rp ->
+                return! postRpSetHandler exerciseId rp next ctx
+        }
+
 let updateSetHandler (exerciseId, setId) : HttpHandler =
     fun next ctx ->
         task {
-            let! dto = ctx.BindJsonAsync<getSetDto>()
-            let result = getSetDto.toDomain exerciseId dto
+            let! dto = ctx.BindJsonAsync<GetSetDto>()
+            let result = GetSetDto.toDomain exerciseId dto
             let! set = findSetAsync (ExerciseId exerciseId) (RegularSetId setId)
 
             match result, set with
             | Ok updatedSet, Some originalSet ->
                 let set = RegularSet.update originalSet updatedSet
-                let! result = updateSetAsync set
-                return! json (getSetDto.fromDomain originalSet) next ctx
+                Task.ignore (updateSetAsync set) |> ignore
+                return! json (GetSetDto.fromDomain originalSet) next ctx
             | Error e, _ -> return! RequestErrors.UNPROCESSABLE_ENTITY e next ctx
             | _, None -> return! RequestErrors.NOT_FOUND {|  |} next ctx
         }
