@@ -6,6 +6,8 @@ open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Logging
+open Newtonsoft.Json
+open Newtonsoft.Json.Converters
 open PiggCrapp.Api.UsersHandlers
 open PiggCrapp.Api.WorkoutsHandlers
 open PiggCrapp.Api.ExercisesHandlers
@@ -53,6 +55,12 @@ let configureApp (app: IApplicationBuilder) =
 let configureServices (services: IServiceCollection) =
     // Add Giraffe dependencies
     services.AddGiraffe() |> ignore
+
+    let customSettings = JsonSerializerSettings()
+    customSettings.Converters.Add(DiscriminatedUnionConverter())
+
+    services.AddSingleton<Json.ISerializer>(
+        NewtonsoftJson.Serializer(customSettings)) |> ignore
 
 [<EntryPoint>]
 let main _ =
