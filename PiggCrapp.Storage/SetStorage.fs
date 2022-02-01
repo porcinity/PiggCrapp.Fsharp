@@ -3,6 +3,7 @@ module PiggCrapp.Storage.Sets
 open Npgsql.FSharp
 open PiggCrapp.Domain.Ids
 open PiggCrapp.Domain.Sets
+open PiggCrapp.Domain.Measurements
 open FSharpPlus
 
 let connStr = "Host=localhost;Database=PiggCrapp;Username=pigg"
@@ -17,7 +18,7 @@ let findSetsAsync exerciseId =
     |> Sql.executeAsync (fun read ->
         {
            RegularSetId = read.int "set_id" |> RegularSetId
-           Weight = read.double "set_weight" |> Weight
+           Weight = (read.double "set_weight") * 1.0<lbs> |> Weight
            Reps = read.int "set_reps" |> Reps
            Exercise = read.uuid "exercise_id" |> ExerciseId
         })
@@ -33,7 +34,7 @@ let findSetAsync exerciseId setId =
     |> Sql.executeAsync (fun read ->
         {
            RegularSetId = read.int "set_id" |> RegularSetId
-           Weight = read.double "set_weight" |> Weight
+           Weight = (read.double "set_weight") * 1.0<lbs> |> Weight
            Reps = read.int "set_reps" |> Reps
            Exercise = read.uuid "exercise_id" |> ExerciseId
         })
