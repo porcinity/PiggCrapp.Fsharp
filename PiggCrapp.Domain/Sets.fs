@@ -73,14 +73,16 @@ type RestPauseRange =
 
 type RestPauseSet =
     { RpSetId: RpSetId
+      Range: RestPauseRange
       Weight: Weight
       RestPauseSets: Reps list
       Exercise: ExerciseId }
 
 module RestPauseSet =
     let create =
-        fun weight exerciseId ->
+        fun weight range exerciseId ->
             { RpSetId = RpSetId <| Guid.NewGuid()
+              Range = range
               Weight = weight
               RestPauseSets = []
               Exercise = exerciseId }
