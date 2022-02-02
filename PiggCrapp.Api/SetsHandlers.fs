@@ -88,66 +88,45 @@ let postRegularSetHandler exerciseId dto =
         }
 
 let postRestPauseHandler (dto: RestPauseDto) : HttpHandler =
-    fun next ctx ->
-        task {
-            return! json dto next ctx
-        }
+    fun next ctx -> task { return! json dto next ctx }
 
 let postWidowMakerSetHandler (dto: WidowMakerDto) : HttpHandler =
-    fun next ctx ->
-        task {
-            return! json dto next ctx
-        }
+    fun next ctx -> task { return! json dto next ctx }
 
 let postExtremeStretchHandler (dto: ExtremeStretchDto) : HttpHandler =
-    fun next ctx ->
-        task {
-            return! json dto next ctx
-        }
+    fun next ctx -> task { return! json dto next ctx }
 
 let toSetChoiceDto dto =
     match dto.Tag with
     | "A" ->
         match box dto.RegularData with
-        | null ->
-            Error "Please provide data for regular set."
-        | _ ->
-            Ok (A dto.RegularData)
+        | null -> Error "Please provide data for regular set."
+        | _ -> Ok(A dto.RegularData)
     | "B" ->
         match box dto.RestPauseData with
-        | null ->
-            Error "Please provide data for rest pause set."
+        | null -> Error "Please provide data for rest pause set."
         | _ -> dto.RestPauseData |> B |> Ok
     | "C" ->
         match box dto.WidowMakerData with
-        | null ->
-            Error "Please provide rest pause set data."
-        | _ ->
-            dto.WidowMakerData |> C |> Ok
+        | null -> Error "Please provide rest pause set data."
+        | _ -> dto.WidowMakerData |> C |> Ok
     | "D" ->
         match box dto.ExtremeStretchData with
-        | null ->
-            Error "Please provide data for extreme stretch set."
-        | _ ->
-            dto.ExtremeStretchData |> D |> Ok
+        | null -> Error "Please provide data for extreme stretch set."
+        | _ -> dto.ExtremeStretchData |> D |> Ok
     | _ -> Error $"Tag {dto.Tag} not recognized."
 
 let postSetHandler exerciseId : HttpHandler =
     fun next ctx ->
         task {
-            let! dto = ctx.BindJsonAsync<PostSetDto> ()
+            let! dto = ctx.BindJsonAsync<PostSetDto>()
 
             match toSetChoiceDto dto with
-            | Ok (A regularSetDto) ->
-                return! postRegularSetHandler exerciseId regularSetDto next ctx
-            | Ok (B restPauseDto) ->
-                return! postRestPauseHandler restPauseDto next ctx
-            | Ok (C widowMakerDto) ->
-                return! postWidowMakerSetHandler widowMakerDto next ctx
-            | Ok (D extremeStretchDto) ->
-                return! postExtremeStretchHandler extremeStretchDto next ctx
-            | Error e ->
-                return! json e next ctx
+            | Ok (A regularSetDto) -> return! postRegularSetHandler exerciseId regularSetDto next ctx
+            | Ok (B restPauseDto) -> return! postRestPauseHandler restPauseDto next ctx
+            | Ok (C widowMakerDto) -> return! postWidowMakerSetHandler widowMakerDto next ctx
+            | Ok (D extremeStretchDto) -> return! postExtremeStretchHandler extremeStretchDto next ctx
+            | Error e -> return! json e next ctx
         }
 
 let updateSetHandler (exerciseId, setId) : HttpHandler =
