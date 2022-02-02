@@ -55,6 +55,7 @@ type ResultBuilder() =
 
 let result = ResultBuilder()
 
+// Applicative workflow
 let validate str =
     match str with
     | "" -> Error [ "Can't be blank" ]
@@ -70,6 +71,7 @@ let resultTest x y z =
         return combineStrings str1 str2 str3
     }
 
+// Monadic workflow
 let valNum num =
     match num with
     | x when x < 1 -> Error [ "Too small" ]
@@ -81,7 +83,7 @@ let addition (x:int) (y:int) =
         let! first = valNum x
         let! second = valNum (first + y)
 
-        return second
+        return second + (first * second)
     }
 
 type Name = Name of string
