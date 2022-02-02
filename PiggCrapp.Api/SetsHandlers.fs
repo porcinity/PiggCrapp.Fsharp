@@ -132,17 +132,20 @@ let toSetChoiceDto dto =
             dto.ExtremeStretchData |> D |> Ok
     | _ -> Error $"Tag {dto.Tag} not recognized."
 
-let postWlaschinHandler exerciseId : HttpHandler =
+let postSetHandler exerciseId : HttpHandler =
     fun next ctx ->
         task {
-            let! dto = ctx.BindJsonAsync<WlaschinDto> ()
-            let result = toWlaschinDto dto
+            let! dto = ctx.BindJsonAsync<PostSetDto> ()
 
-            match result with
+            match toSetChoiceDto dto with
             | Ok (A regularSetDto) ->
                 return! postRegularSetHandler exerciseId regularSetDto next ctx
             | Ok (B restPauseDto) ->
-                return! postRpSetHandler restPauseDto next ctx
+                return! postRestPauseHandler restPauseDto next ctx
+            | Ok (C widowMakerDto) ->
+                return! postWidowMakerSetHandler widowMakerDto next ctx
+            | Ok (D extremeStretchDto) ->
+                return! postExtremeStretchHandler extremeStretchDto next ctx
             | Error e ->
                 return! json e next ctx
         }
