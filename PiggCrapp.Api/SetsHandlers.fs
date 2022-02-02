@@ -51,7 +51,9 @@ type PostSet =
 type PostSetDto =
     { Tag: string
       RegularData: RegularSetDto
-      RestPauseData: RestPauseDto }
+      RestPauseData: RestPauseDto
+      WidowMakerData: WidowMakerDto
+      ExtremeStretchData: ExtremeStretchDto }
 
 let getSetsHandler exerciseId : HttpHandler =
     fun next ctx ->
