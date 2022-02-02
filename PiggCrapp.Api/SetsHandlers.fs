@@ -110,14 +110,26 @@ let toSetChoiceDto dto =
     | "A" ->
         match box dto.RegularData with
         | null ->
-            Error "A data not expected to be null."
+            Error "Please provide data for regular set."
         | _ ->
             Ok (A dto.RegularData)
     | "B" ->
         match box dto.RestPauseData with
         | null ->
-            Error "B data not expected to be null."
+            Error "Please provide data for rest pause set."
         | _ -> dto.RestPauseData |> B |> Ok
+    | "C" ->
+        match box dto.WidowMakerData with
+        | null ->
+            Error "Please provide rest pause set data."
+        | _ ->
+            dto.WidowMakerData |> C |> Ok
+    | "D" ->
+        match box dto.ExtremeStretchData with
+        | null ->
+            Error "Please provide data for extreme stretch set."
+        | _ ->
+            dto.ExtremeStretchData |> D |> Ok
     | _ -> Error $"Tag {dto.Tag} not recognized."
 
 let postWlaschinHandler exerciseId : HttpHandler =
