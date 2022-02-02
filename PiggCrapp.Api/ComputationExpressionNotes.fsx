@@ -69,3 +69,50 @@ let resultTest x y z =
         and! str3 = validate z
         return combineStrings str1 str2 str3
     }
+
+let valNum num =
+    match num with
+    | x when x < 1 -> Error [ "Too small" ]
+    | x when x > 10 -> Error [ "Too big" ]
+    | _ -> Ok num
+
+let addition (x:int) (y:int) =
+    result {
+        let! first = valNum x
+        let! second = valNum (first + y)
+
+        return second
+    }
+
+type Name = Name of string
+
+type Age = Age of int
+
+type Person =
+    {
+      Name: Name
+      Age: Age }
+
+module Person =
+    let basePerson =
+        { Name = Name "New User"
+          Age = Age 20 }
+
+type PersonBuilder() =
+    member _.Zero _ = Person.basePerson
+
+    member _.Yield _ = Person.basePerson
+
+    [<CustomOperation("name")>]
+    member _.Name(person, name) = { person with Name = Name name }
+
+    [<CustomOperation("age")>]
+    member _.Age(person, age) = { person with Age = Age age }
+
+let person = PersonBuilder()
+
+let newPerson str int =
+    person {
+        name str
+        age int
+    }
