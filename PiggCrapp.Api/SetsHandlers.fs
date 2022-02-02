@@ -48,7 +48,7 @@ type PostSet =
     | C of WidowMakerDto
     | D of ExtremeStretchDto
 
-type WlaschinDto =
+type PostSetDto =
     { Tag: string
       RegularData: RegularSetDto
       RestPauseData: RestPauseDto }
