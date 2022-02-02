@@ -87,29 +87,25 @@ let postRegularSetHandler exerciseId dto =
             | Error e -> return! RequestErrors.UNPROCESSABLE_ENTITY e next ctx
         }
 
-let postRpSetHandler (dto: RestPauseDto) : HttpHandler =
+let postRestPauseHandler (dto: RestPauseDto) : HttpHandler =
     fun next ctx ->
         task {
             return! json dto next ctx
         }
 
-let postSetHandler exerciseId : HttpHandler =
+let postWidowMakerSetHandler (dto: WidowMakerDto) : HttpHandler =
     fun next ctx ->
         task {
-            let! dto = ctx.BindJsonAsync<PostSetDto>()
-
-            match dto.Range, dto.Reps with
-            | Some range, None ->
-                let rpDto = { Id = dto.Id; Range = range; Weight = dto.Weight }
-                return! postRpSetHandler rpDto next ctx
-            | None, Some reps ->
-                let rsDto = { Id = dto.Id; Weight = dto.Weight; Reps = reps }
-                return! postRegularSetHandler exerciseId rsDto next ctx
-            | _ ->
-                return! RequestErrors.UNPROCESSABLE_ENTITY "Invalid input" next ctx
+            return! json dto next ctx
         }
 
-let toWlaschinDto dto =
+let postExtremeStretchHandler (dto: ExtremeStretchDto) : HttpHandler =
+    fun next ctx ->
+        task {
+            return! json dto next ctx
+        }
+
+let toSetChoiceDto dto =
     match dto.Tag with
     | "A" ->
         match box dto.RegularData with
