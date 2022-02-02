@@ -98,10 +98,10 @@ module RestPauseSet =
 
         { rpSet with RestPauseSets = setMinus }
 
-type BereavedSetId = BereavedSetId of Guid
+type WidowMakerSetId = WidowMakerSetId of Guid
 
-type BereavedMaker =
-    { BereavedSetId: BereavedSetId
+type WidowMaker =
+    { BereavedSetId: WidowMakerSetId
       Weight: Weight
       TargetReps: Reps
       ActualReps: Reps
@@ -119,5 +119,5 @@ type ExtremeStretch =
 type Set =
     | Regular of RegularSet
     | RestPause of RestPauseSet
-    | BereavedMaker of BereavedMaker
+    | BereavedMaker of WidowMaker
     | ExtremeStretch of ExtremeStretch
