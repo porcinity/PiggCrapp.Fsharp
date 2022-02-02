@@ -30,17 +30,17 @@ type RestPauseDto =
       Range: string
       Weight: double }
 
-// Begin: my attempt
-type PostSetDto =
+type WidowMakerDto =
     { Id: int
       Weight: double
-      Reps: int option
-      Range: string option }
+      TargetReps: int
+      ActualReps: int
+      CompletionTime: double }
 
-type SetDto =
-    | GetSetDto of RegularSetDto
-    | RestPauseDto of RestPauseDto
-// End: my attempt
+type ExtremeStretchDto =
+    { Id: int
+      Weight: double
+      Time: double }
 
 // Scott Wlaschin's approach
 type WlaschinChoice =
