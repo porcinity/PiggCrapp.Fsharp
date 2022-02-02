@@ -107,7 +107,7 @@ type WidowMaker =
       ActualReps: Reps
       CompletionTime: float }
 
-type Time = Time of float<sec>
+type Time = Time of double<sec>
 
 type ExtremeStretchId = ExtremeStretchId of Guid
 
