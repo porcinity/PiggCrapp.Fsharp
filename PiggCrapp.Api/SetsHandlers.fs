@@ -42,10 +42,11 @@ type ExtremeStretchDto =
       Weight: double
       Time: double }
 
-// Scott Wlaschin's approach
-type WlaschinChoice =
+type PostSet =
     | A of RegularSetDto
     | B of RestPauseDto
+    | C of WidowMakerDto
+    | D of ExtremeStretchDto
 
 type WlaschinDto =
     { Tag: string
