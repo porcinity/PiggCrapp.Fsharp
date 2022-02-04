@@ -8,17 +8,17 @@ open PiggCrapp.Domain.Workouts
 open PiggCrapp.Storage.Workouts
 
 type getWorkoutDto =
-    { WorkoutId: Guid
+    { WorkoutId: string
       Date: string
       Variation: string
-      Owner: Guid }
+      Owner: string }
 
 module getWorkoutDto =
     let fromDomain (workout: Workout) =
-        { WorkoutId = WorkoutId.toGuid workout.WorkoutId
+        { WorkoutId = ShortGuid.fromGuid (WorkoutId.toGuid workout.WorkoutId)
           Date = workout.Date.ToString("yyyy-MM-dd")
           Variation = WorkoutVariation.toString workout.Variation
-          Owner = UserId.toGuid workout.Owner }
+          Owner = ShortGuid.fromGuid (UserId.toGuid workout.Owner) }
 
 type postWorkoutDto = { Variation: string }
 
@@ -27,7 +27,8 @@ type putWorkoutDto = { Variation: string; Date: string }
 let getWorkoutsHandler userId : HttpHandler =
     fun next ctx ->
         task {
-            let! workouts = findWorkoutsAsync (UserId userId)
+            let guid = ShortGuid.toGuid userId
+            let! workouts = findWorkoutsAsync (UserId guid)
 
             let dtos =
                 workouts |> List.map getWorkoutDto.fromDomain
@@ -38,7 +39,8 @@ let getWorkoutsHandler userId : HttpHandler =
 let getWorkoutHandler workoutId : HttpHandler =
     fun next ctx ->
         task {
-            match! findWorkoutAsync workoutId with
+            let guid = ShortGuid.toGuid workoutId
+            match! findWorkoutAsync guid with
             | Some workout ->
                 let dto = getWorkoutDto.fromDomain workout
                 return! json dto next ctx
@@ -48,12 +50,13 @@ let getWorkoutHandler workoutId : HttpHandler =
 let postWorkoutHandler userId : HttpHandler =
     fun next ctx ->
         task {
+            let guid = ShortGuid.toGuid userId
             let! dto = ctx.BindJsonAsync<postWorkoutDto>()
 
             let variation =
                 WorkoutVariation.fromString dto.Variation
 
-            let workout = Workout.create variation (UserId userId)
+            let workout = Workout.create variation (UserId guid)
             do! insertWorkoutAsync workout |> Task.ignore
             let guid = WorkoutId.toGuid workout.WorkoutId
             return! redirectTo false $"https://localhost:7162/workouts/{guid}" next ctx
@@ -62,7 +65,8 @@ let postWorkoutHandler userId : HttpHandler =
 let updateWorkoutHandler workoutId : HttpHandler =
     fun next ctx ->
         task {
-            match! findWorkoutAsync workoutId with
+            let guid = ShortGuid.toGuid workoutId
+            match! findWorkoutAsync guid with
             | Some w ->
                 let! dto = ctx.BindJsonAsync<putWorkoutDto>()
                 let date = DateTime.Parse(dto.Date)
@@ -85,7 +89,8 @@ let updateWorkoutHandler workoutId : HttpHandler =
 let deleteWorkoutHandler workoutId : HttpHandler =
     fun next ctx ->
         task {
-            match! deleteWorkoutAsync (WorkoutId workoutId) with
+            let guid = ShortGuid.toGuid workoutId
+            match! deleteWorkoutAsync (WorkoutId guid) with
             | 1 -> return! Successful.NO_CONTENT next ctx
             | _ -> return! RequestErrors.NOT_FOUND {| message = "No workout found with that Id" |} next ctx
         }
