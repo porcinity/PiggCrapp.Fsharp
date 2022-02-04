@@ -24,25 +24,25 @@ let webApp =
     choose [ GET
              >=> choose [ route "/users" >=> getUsersHandler
                           routef "/users/%s" getUserHandler
-                          routef "/users/%O/workouts" getWorkoutsHandler
-                          routef "/workouts/%O" getWorkoutHandler
+                          routef "/users/%s/workouts" getWorkoutsHandler
+                          routef "/workouts/%s" getWorkoutHandler
                           routef "/workouts/%O/exercises" getExercisesHandler
                           routef "/exercises/%O" getExerciseHandler
                           routef "/exercises/%O/sets" getSetsHandler
                           routef "/exercises/%O/sets/%i" getSetHandler ]
              POST
              >=> choose [ route "/users" >=> postUserHandler
-                          routef "/users/%O/workouts" postWorkoutHandler
+                          routef "/users/%s/workouts" postWorkoutHandler
                           routef "/workouts/%O/exercises" postExerciseHandler
                           routef "/exercises/%O/sets" postSetHandler ]
              PUT
-             >=> choose [ routef "/users/%O" updateUserHandler
-                          routef "/workouts/%O" updateWorkoutHandler
+             >=> choose [ routef "/users/%s" updateUserHandler
+                          routef "/workouts/%s" updateWorkoutHandler
                           routef "/exercises/%O" updateExerciseHandler
                           routef "/exercises/%O/sets/%i" updateSetHandler ]
              DELETE
-             >=> choose [ routef "/users/%O" deleteUserHandler
-                          routef "/workouts/%O" deleteWorkoutHandler
+             >=> choose [ routef "/users/%s" deleteUserHandler
+                          routef "/workouts/%s" deleteWorkoutHandler
                           routef "/exercises/%O" deleteExerciseHandler
                           routef "/exercises/%O/sets/%i" deleteSetHandler ] ]
 
