@@ -84,9 +84,10 @@ let postUserHandler: HttpHandler =
 let updateUserHandler userId : HttpHandler =
     fun next ctx ->
         task {
+            let guid = ShortGuid.toGuid userId
             let! dto = ctx.BindJsonAsync<PostUserDto.T>()
             let updateUser = PostUserDto.toDomain dto
-            let! user = userId |> findUserAsync
+            let! user = guid |> findUserAsync
 
             match updateUser, user with
             | Ok update, Some user ->
@@ -105,7 +106,8 @@ let updateUserHandler userId : HttpHandler =
 let deleteUserHandler userId : HttpHandler =
     fun next ctx ->
         task {
-            match! deleteUserAsync (UserId userId) with
+            let guid = ShortGuid.toGuid userId
+            match! deleteUserAsync (UserId guid) with
             | 1 -> return! Successful.NO_CONTENT next ctx
             | _ -> return! RequestErrors.NOT_FOUND "" next ctx
         }
