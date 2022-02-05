@@ -64,7 +64,10 @@ module RegularSet =
                   Weight = updatedSet.Weight
                   Reps = updatedSet.Reps }
 
-type RpSetId = RpSetId of Guid
+type RpSetId = RpSetId of int
+
+module RpSetId =
+    let toInt (RpSetId id) = id
 
 type RestPauseRange =
     | Base
@@ -80,8 +83,8 @@ type RestPauseSet =
 
 module RestPauseSet =
     let create =
-        fun weight range exerciseId ->
-            { RpSetId = RpSetId <| Guid.NewGuid()
+        fun id weight range exerciseId ->
+            { RpSetId = id
               Range = range
               Weight = weight
               RestPauseSets = []
@@ -98,18 +101,24 @@ module RestPauseSet =
 
         { rpSet with RestPauseSets = setMinus }
 
-type WidowMakerSetId = WidowMakerSetId of Guid
+type WidowMakerSetId = WidowMakerSetId of int
 
-type WidowMaker =
-    { BereavedSetId: WidowMakerSetId
-      Weight: Weight
-      TargetReps: Reps
-      ActualReps: Reps
-      CompletionTime: float }
+module WidowMakerSetId =
+    let toInt (WidowMakerSetId id) = id
 
 type Time = Time of double<sec>
 
-type ExtremeStretchId = ExtremeStretchId of Guid
+type WidowMaker =
+    { WidowMakerSetId: WidowMakerSetId
+      Weight: Weight
+      TargetReps: Reps
+      ActualReps: Reps
+      CompletionTime: Time }
+
+type ExtremeStretchId = ExtremeStretchId of int
+
+module ExtremeStretchId =
+    let toInt (ExtremeStretchId id) = id
 
 type ExtremeStretch =
     { ExtremeStretchId: ExtremeStretchId
@@ -119,5 +128,5 @@ type ExtremeStretch =
 type Set =
     | Regular of RegularSet
     | RestPause of RestPauseSet
-    | BereavedMaker of WidowMaker
+    | WidowMaker of WidowMaker
     | ExtremeStretch of ExtremeStretch
