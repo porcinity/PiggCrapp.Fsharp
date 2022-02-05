@@ -130,3 +130,15 @@ type Set =
     | RestPause of RestPauseSet
     | WidowMaker of WidowMaker
     | ExtremeStretch of ExtremeStretch
+
+module Set =
+    let unwrapId set =
+        match set with
+        | Regular set ->
+            RegularSetId.toInt set.RegularSetId
+        | RestPause set ->
+            RpSetId.toInt set.RpSetId
+        | WidowMaker set ->
+            WidowMakerSetId.toInt set.WidowMakerSetId
+        | ExtremeStretch set ->
+            ExtremeStretchId.toInt set.ExtremeStretchId
