@@ -47,12 +47,10 @@ let getUsersHandler: HttpHandler =
             return! json users next ctx
         }
 
-let getUserHandler id : HttpHandler =
+let getUserHandler userId : HttpHandler =
     fun next ctx ->
         task {
-            let guid = ShortGuid.toGuid id
-
-            match! findUserAsyncResult guid with
+            match! findUserAsyncResult userId with
             | Some (Ok u) ->
                 let dto = getUserDto.fromDomain u
                 return! json dto next ctx
@@ -100,8 +98,7 @@ let updateUserHandler userId : HttpHandler =
 let deleteUserHandler userId : HttpHandler =
     fun next ctx ->
         task {
-            let guid = ShortGuid.toGuid userId
-            match! deleteUserAsync (UserId guid) with
+            match! deleteUserAsync (UserId userId) with
             | 1 -> return! Successful.NO_CONTENT next ctx
             | _ -> return! RequestErrors.NOT_FOUND "" next ctx
         }
