@@ -59,12 +59,6 @@ let configureServices (services: IServiceCollection) =
     // Add Giraffe dependencies
     services.AddGiraffe() |> ignore
 
-    let customSettings = JsonSerializerSettings()
-    customSettings.Converters.Add(DiscriminatedUnionConverter())
-
-    services.AddSingleton<Json.ISerializer>(
-        NewtonsoftJson.Serializer(customSettings)) |> ignore
-
 [<EntryPoint>]
 let main _ =
     Host
