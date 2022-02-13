@@ -1,6 +1,5 @@
 ﻿module PiggCrapp.Domain.Sets
 
-open System
 open PiggCrapp.Domain.Ids
 open PiggCrapp.Domain.Measurements
 
