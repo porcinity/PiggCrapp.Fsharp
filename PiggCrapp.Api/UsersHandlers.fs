@@ -71,11 +71,7 @@ let postUserHandler: HttpHandler =
 
             match PostUserDto.toDomain dto with
             | Ok user ->
-                insertUserAsync user
-                |> Async.AwaitTask
-                |> Async.RunSynchronously
-                |> ignore
-
+                do! insertUserAsync user |> Async.AwaitTask
                 let response = getUserDto.fromDomain user
                 return! Successful.CREATED response next ctx
             | Error e -> return! RequestErrors.UNPROCESSABLE_ENTITY {| errors = e |} next ctx
@@ -84,19 +80,15 @@ let postUserHandler: HttpHandler =
 let updateUserHandler userId : HttpHandler =
     fun next ctx ->
         task {
-            let guid = ShortGuid.toGuid userId
             let! dto = ctx.BindJsonAsync<PostUserDto.T>()
             let updateUser = PostUserDto.toDomain dto
-            let! user = guid |> findUserAsync
+            let! user = userId |> findUserAsync
 
             match updateUser, user with
             | Ok update, Some user ->
                 let updateResult = User.update user update
 
-                updateUserAsync updateResult
-                |> Async.AwaitTask
-                |> Async.RunSynchronously
-                |> ignore
+                do! updateUserAsync updateResult |> Async.AwaitTask
 
                 return! Successful.CREATED {|  |} next ctx
             | Error e, _ -> return! RequestErrors.UNPROCESSABLE_ENTITY e next ctx
