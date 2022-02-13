@@ -44,9 +44,17 @@ module Exercise =
 
     let changeName (exercise: Exercise) name = { exercise with Name = name }
 
-    let addSet exercise set =
-        { exercise with
-              Sets = exercise.Sets @ [ set ] }
+    let addSet exercise (set: Set) =
+        let unwrappedSetIds =
+            exercise.Sets
+            |> List.map Set.unwrapId
+        let setId = Set.unwrapId set
+
+        match List.contains setId unwrappedSetIds with
+        | true -> Error [ "Cannot use same id." ]
+        | false -> Ok
+                    { exercise with
+                        Sets = exercise.Sets @ [ set ] }
 
     let removeSet exercise set =
         let setsWithout =
