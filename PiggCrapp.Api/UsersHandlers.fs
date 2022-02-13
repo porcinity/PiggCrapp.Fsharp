@@ -40,9 +40,11 @@ module PostUserDto =
 let getUsersHandler: HttpHandler =
     fun next ctx ->
         task {
-            let! users = findUsersAsync ()
-            let dtos = users |> List.map getUserDto.fromDomain
-            return! json dtos next ctx
+            let! users =
+                findUsersAsync ()
+                |> Task.map (List.map getUserDto.fromDomain)
+
+            return! json users next ctx
         }
 
 let getUserHandler id : HttpHandler =
