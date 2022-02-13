@@ -40,6 +40,7 @@ let getWorkoutHandler workoutId : HttpHandler =
     fun next ctx ->
         task {
             let guid = ShortGuid.toGuid workoutId
+
             match! findWorkoutAsync guid with
             | Some workout ->
                 let dto = getWorkoutDto.fromDomain workout
@@ -66,6 +67,7 @@ let updateWorkoutHandler workoutId : HttpHandler =
     fun next ctx ->
         task {
             let guid = ShortGuid.toGuid workoutId
+
             match! findWorkoutAsync guid with
             | Some w ->
                 let! dto = ctx.BindJsonAsync<putWorkoutDto>()
@@ -90,6 +92,7 @@ let deleteWorkoutHandler workoutId : HttpHandler =
     fun next ctx ->
         task {
             let guid = ShortGuid.toGuid workoutId
+
             match! deleteWorkoutAsync (WorkoutId guid) with
             | 1 -> return! Successful.NO_CONTENT next ctx
             | _ -> return! RequestErrors.NOT_FOUND {| message = "No workout found with that Id" |} next ctx
