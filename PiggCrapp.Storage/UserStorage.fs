@@ -87,6 +87,7 @@ let insertUserAsync user =
         "@date", Sql.timestamp <| user.CreatedDate
     ]
     |> Sql.executeNonQueryAsync
+    |> Task.ignore
 
 let updateUserAsync (user:User) =
     connStr
@@ -101,6 +102,7 @@ let updateUserAsync (user:User) =
         "@id", Sql.uuid <| UserId.toGuid user.UserId
     ]
     |> Sql.executeNonQueryAsync
+    |> Task.ignore
     
 let deleteUserAsync userId =
     connStr
