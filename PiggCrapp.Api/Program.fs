@@ -6,8 +6,6 @@ open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Logging
-open Newtonsoft.Json
-open Newtonsoft.Json.Converters
 open PiggCrapp.Api.UsersHandlers
 open PiggCrapp.Api.WorkoutsHandlers
 open PiggCrapp.Api.ExercisesHandlers
@@ -20,13 +18,12 @@ let errorHandler (ex: Exception) (logger: ILogger) =
     clearResponse
     >=> ServerErrors.INTERNAL_ERROR ex.Message
 
-let shortGuidHandler shortGuid =
-    ShortGuid.toGuid shortGuid
+let shortGuid = ShortGuid.toGuid
 
 let webApp =
     choose [ GET
              >=> choose [ route "/users" >=> getUsersHandler
-                          routef "/users/%s" (fun s -> shortGuidHandler s |> getUserHandler)
+                          routef "/users/%s" (shortGuid >> getUserHandler)
                           routef "/users/%s/workouts" getWorkoutsHandler
                           routef "/workouts/%s" getWorkoutHandler
                           routef "/workouts/%O/exercises" getExercisesHandler
@@ -35,16 +32,16 @@ let webApp =
                           routef "/exercises/%O/sets/%i" getSetHandler ]
              POST
              >=> choose [ route "/users" >=> postUserHandler
-                          routef "/users/%s/workouts" postWorkoutHandler
+                          routef "/users/%s/workouts" (shortGuid >> postWorkoutHandler)
                           routef "/workouts/%O/exercises" postExerciseHandler
                           routef "/exercises/%O/sets" postSetHandler ]
              PUT
-             >=> choose [ routef "/users/%s" (fun string -> shortGuidHandler string |> updateUserHandler)
+             >=> choose [ routef "/users/%s" (shortGuid >> updateUserHandler)
                           routef "/workouts/%s" updateWorkoutHandler
                           routef "/exercises/%O" updateExerciseHandler
                           routef "/exercises/%O/sets/%i" updateSetHandler ]
              DELETE
-             >=> choose [ routef "/users/%s" (fun string -> shortGuidHandler string |> deleteUserHandler)
+             >=> choose [ routef "/users/%s" (shortGuid >> deleteUserHandler)
                           routef "/workouts/%s" deleteWorkoutHandler
                           routef "/exercises/%O" deleteExerciseHandler
                           routef "/exercises/%O/sets/%i" deleteSetHandler ] ]
