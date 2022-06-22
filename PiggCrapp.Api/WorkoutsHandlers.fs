@@ -51,13 +51,12 @@ let getWorkoutHandler workoutId : HttpHandler =
 let postWorkoutHandler userId : HttpHandler =
     fun next ctx ->
         task {
-            let guid = ShortGuid.toGuid userId
             let! dto = ctx.BindJsonAsync<postWorkoutDto>()
 
             let variation =
                 WorkoutVariation.fromString dto.Variation
 
-            let workout = Workout.create variation (UserId guid)
+            let workout = Workout.create variation (UserId userId)
             do! insertWorkoutAsync workout |> Task.ignore
             let guid = WorkoutId.toGuid workout.WorkoutId
             return! redirectTo false $"https://localhost:7162/workouts/{guid}" next ctx
